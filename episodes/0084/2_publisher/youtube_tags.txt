@@ -1,0 +1,1 @@
+angular, security, vulnerabilities, bugfixes, compiler, skyzerozx, supply-chain, ssrf, xss, pnpm, typescript, web development, frontend
