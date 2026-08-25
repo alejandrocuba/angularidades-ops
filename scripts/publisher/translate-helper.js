@@ -2,10 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
+async function runTranslateHelper(command, lang = 'es', episodeArg = null) {
   if (!command || !['dump', 'build', 'validate'].includes(command)) {
     console.error(
-      'Usage: node scripts/publisher/translate-helper.js <dump|build|validate> [episodeNumber]'
+      'Usage: node scripts/publisher/translate-helper.js <dump|build|validate> [es|en] [episodeNumber]'
     );
     process.exit(1);
   }
@@ -31,12 +31,25 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
   }
 
   const episodeDir = path.join(episodesDir, episodeNumber);
-  console.log(`Targeting Episode: ${episodeNumber} (${episodeDir})`);
+  console.log(`Targeting Episode: ${episodeNumber} (${episodeDir}) [Language: ${lang}]`);
+
+  const findSourceCaptionsPath = () => {
+    const candidates = [
+      path.join(episodeDir, '1_recording/youtube_captions.sbv'),
+      path.join(episodeDir, '1_recording/captions.sbv')
+    ];
+    for (const p of candidates) {
+      if (fs.existsSync(p)) return p;
+    }
+    return null;
+  };
 
   if (command === 'dump') {
-    const srtPath = path.join(episodeDir, '1_recording/captions.sbv');
-    if (!fs.existsSync(srtPath)) {
-      console.error(`Error: captions.sbv not found at ${srtPath}`);
+    const srtPath = findSourceCaptionsPath();
+    if (!srtPath) {
+      console.error(
+        `Error: youtube_captions.sbv or captions.sbv not found in ${path.join(episodeDir, '1_recording')}`
+      );
       process.exit(1);
     }
     const data = fs.readFileSync(srtPath, 'utf8');
@@ -61,12 +74,14 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
       const end = Math.min(i + chunkSize - 1, parsed.length - 1);
       const chunkPath = path.join(episodeDir, `1_recording/chunk-${start}-${end}.json`);
       fs.writeFileSync(chunkPath, JSON.stringify(chunk, null, 2));
-      console.log(`Saved source chunk for translation: 1_recording/chunk-${start}-${end}.json`);
+      console.log(`Saved source chunk for correction: 1_recording/chunk-${start}-${end}.json`);
     }
   } else if (command === 'build') {
-    const srtPath = path.join(episodeDir, '1_recording/captions.sbv');
-    if (!fs.existsSync(srtPath)) {
-      console.error(`Error: captions.sbv not found at ${srtPath}`);
+    const srtPath = findSourceCaptionsPath();
+    if (!srtPath) {
+      console.error(
+        `Error: youtube_captions.sbv or captions.sbv not found in ${path.join(episodeDir, '1_recording')}`
+      );
       process.exit(1);
     }
     const data = fs.readFileSync(srtPath, 'utf8');
@@ -80,12 +95,9 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
     }
 
     const files = fs.readdirSync(publisherDir);
+    const prefix = lang === 'en' ? 'trans-' : 'es-chunk-';
     const transFiles = files
-      .filter(
-        (f) =>
-          (lang === 'en' ? f.startsWith('trans-') : f.startsWith('es-chunk-')) &&
-          f.endsWith('.json')
-      )
+      .filter((f) => f.startsWith(prefix) && f.endsWith('.json'))
       .sort((a, b) => {
         const aMatch = a.match(/-(\d+)-\d+\.json$/);
         const bMatch = b.match(/-(\d+)-\d+\.json$/);
@@ -95,9 +107,9 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
       });
 
     if (transFiles.length === 0) {
-      console.error(`Error: No trans-*.json files found in ${publisherDir}`);
+      console.error(`Error: No ${prefix}*.json files found in ${publisherDir}`);
       console.log(
-        'Ensure you have saved translated chunks (e.g. trans-0-99.json or es-chunk-0-99.json) in 2_publisher/'
+        `Ensure you have saved corrected chunks (e.g. es-chunk-0-99.json or trans-0-99.json) in 2_publisher/`
       );
       process.exit(1);
     }
@@ -124,22 +136,22 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
           }
         }
         translations = translations.concat(content);
-        console.log(`Loaded ${content.length} translations from ${file}`);
+        console.log(`Loaded ${content.length} blocks from ${file}`);
       } catch (e) {
         console.error(`Error parsing JSON in file ${file}: ${e.message}`);
         process.exit(1);
       }
     });
 
-    console.log(`Total translations loaded: ${translations.length}`);
-    console.log(`Original blocks in captions.sbv: ${totalBlocks}`);
+    console.log(`Total blocks loaded: ${translations.length}`);
+    console.log(`Original blocks in source captions: ${totalBlocks}`);
 
     if (translations.length !== totalBlocks) {
       console.error(
         `Mismatch! Original has ${totalBlocks} blocks, but found ${translations.length} translations.`
       );
       console.log('Run the validate command to see alignment details:');
-      console.log(`  node scripts/publisher/translate-helper.js validate ${episodeNumber}`);
+      console.log(`  node scripts/publisher/translate-helper.js validate ${lang} ${episodeNumber}`);
       process.exit(1);
     }
 
@@ -157,9 +169,11 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
       `Successfully compiled and wrote ${outputPath} with ${translations.length} blocks!`
     );
   } else if (command === 'validate') {
-    const srtPath = path.join(episodeDir, '1_recording/captions.sbv');
-    if (!fs.existsSync(srtPath)) {
-      console.error(`Error: captions.sbv not found at ${srtPath}`);
+    const srtPath = findSourceCaptionsPath();
+    if (!srtPath) {
+      console.error(
+        `Error: youtube_captions.sbv or captions.sbv not found in ${path.join(episodeDir, '1_recording')}`
+      );
       process.exit(1);
     }
     const data = fs.readFileSync(srtPath, 'utf8');
@@ -173,11 +187,14 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
     }
 
     const files = fs.readdirSync(publisherDir);
+    const prefix = lang === 'en' ? 'trans-' : 'es-chunk-';
     const transFiles = files
-      .filter((f) => f.startsWith('trans-') && f.endsWith('.json'))
+      .filter((f) => f.startsWith(prefix) && f.endsWith('.json'))
       .sort((a, b) => {
-        const aStart = parseInt(a.split('-')[1]);
-        const bStart = parseInt(b.split('-')[1]);
+        const aMatch = a.match(/-(\d+)-\d+\.json$/);
+        const bMatch = b.match(/-(\d+)-\d+\.json$/);
+        const aStart = aMatch ? parseInt(aMatch[1], 10) : 0;
+        const bStart = bMatch ? parseInt(bMatch[1], 10) : 0;
         return aStart - bStart;
       });
 
@@ -197,13 +214,13 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
       }
     });
 
-    console.log('--- Translation Chunk Coverage ---');
+    console.log(`--- Chunk Coverage [Prefix: ${prefix}] ---`);
     chunkOffsets.forEach((c) => {
       console.log(
         `- ${c.file}: starts at index ${c.offset}, contains ${c.length} blocks (indices ${c.offset} to ${c.offset + c.length - 1})`
       );
     });
-    console.log(`Total translations loaded: ${translations.length}`);
+    console.log(`Total blocks loaded: ${translations.length}`);
     console.log(`Original blocks count: ${totalBlocks}`);
 
     if (translations.length === totalBlocks) {
@@ -223,7 +240,7 @@ async function runTranslateHelper(command, lang = 'en', episodeArg = null) {
       const transText = translations[i] || 'N/A';
 
       console.log(
-        `${i.toString().padStart(3)}: [ES] "${origText.substring(0, 45)}..." => [EN] "${transText.replace(/\n/g, ' ').substring(0, 45)}..."`
+        `${i.toString().padStart(3)}: [ORIGINAL] "${origText.substring(0, 45)}..." => [CORRECTED] "${transText.replace(/\n/g, ' ').substring(0, 45)}..."`
       );
     }
   }
@@ -241,7 +258,7 @@ const isMain = () => {
 if (isMain()) {
   const args = process.argv.slice(2);
   const command = args[0]; // 'dump', 'build', or 'validate'
-  const lang = args.find((a) => a === 'en' || a === 'es') || 'en';
+  const lang = args.find((a) => a === 'en' || a === 'es') || 'es';
   let episodeArg = args.find(
     (arg) =>
       !arg.startsWith('--') &&

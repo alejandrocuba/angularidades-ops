@@ -49,26 +49,18 @@ Temas que abordamos durante la conversación:
 
 ---
 ---
+---
 # youtube_captions_es.sbv
 **[CRITICAL INSTRUCTION - YOUTUBE SYNC COMPATIBILITY]**
-Technically reviewed and corrected Spanish transcript.
-FORMAT: Valid SBV (SubViewer) format, strictly maintaining the exact same timestamps from the original `captions.sbv`.
-DO NOT add speaker tags (e.g., "Name:").
-DO NOT remove filler words (e.g., "eh", "ah") or change the pacing.
-ONLY correct technical typos (e.g., "Cloud Room" -> "Cloud Run").
-Final file must be structurally identical to the original for YouTube auto-sync.
-
----
-# youtube_captions_en.sbv
-**[CRITICAL INSTRUCTION - YOUTUBE SYNC COMPATIBILITY]**
-Technically reviewed and translated English transcript WITH TIMESTAMPS.
-FORMAT: Valid SBV (SubViewer) format, strictly maintaining the exact same timestamps from the original `captions.sbv`.
-Save tokens, use the same corrected terms from the spanish corrected transcript.
-MUST translate 100% of all text blocks into fluent English. Partial/incomplete translations leaving Spanish words (e.g. "utilizando el") are strictly prohibited.
-DO NOT translate the brand name "Angularidades" (keep as "Angularidades"). Keep "GolemUI" as "GolemUI" without spaces.
-DO NOT add speaker tags (e.g., "Name:").
-ONLY correct technical terms and translate accurately to English.
-Final file must contain the exact same timestamp blocks as the original Spanish SBV, but with the text completely translated into English.
+Technically reviewed, cleaned, and corrected Spanish transcript.
+FORMAT: Valid SBV (SubViewer) format, strictly maintaining the exact same timestamps from the original recording captions file.
+- DO NOT add speaker tags (e.g., "Name:").
+- DO NOT remove timestamps or change pacing.
+- Correct grammatical, semantic, and phonetic transcription mistakes from YouTube ASR.
+- Correct and standardize people's names (hosts, guests, community members).
+- Correct technical typos and terminology based on official Angular docs and `@angular-developer` skill (e.g. "box" -> "bugs", "Cloud Room" -> "Cloud Run", "Signals", "SSR", "hydration").
+- Strictly preserve internal line breaks (`\n`) within each block.
+- Multilingual caption translations (English, etc.) are deferred to YouTube's auto-translation engine.
 
 ---
 ---

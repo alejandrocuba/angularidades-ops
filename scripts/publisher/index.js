@@ -99,6 +99,7 @@ async function publishEpisode(options = {}) {
     }
 
     snippet.defaultLanguage = 'es';
+    snippet.defaultAudioLanguage = 'es';
     snippet.title = titleEs || snippet.title;
     snippet.description = descriptionEs || snippet.description;
     snippet.tags = tags;

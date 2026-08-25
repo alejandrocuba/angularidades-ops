@@ -127,11 +127,11 @@ To run only the E2E CLI integration test suite:
 pnpm run test:e2e
 ```
 
-## Caption Translation & Alignment Workflow (Internal)
+## Caption Processing & Alignment Workflow (Internal)
 
-The pipeline automatically attempts to download the existing YouTube captions (giving priority to Spanish ASR or manual tracks) and saves them to `1_recording/captions.sbv`. This serves as a source of truth for the Publisher Agent, eliminating manual copy-pasting.
+The pipeline automatically attempts to download the existing YouTube captions (giving priority to Spanish ASR or manual tracks) and saves them to `1_recording/youtube_captions.sbv` (or `captions.sbv`). This serves as a source of truth for the Publisher Agent, eliminating manual copy-pasting.
 
-To translate captions to English block-by-block while maximizing token efficiency and ensuring perfect synchronization, use the internal `translate-helper.js` script:
+To review and correct captions block-by-block while maximizing token efficiency and ensuring perfect synchronization, use the internal `translate-helper.js` script:
 
 ### 1. Dump Spanish captions to plain JSON chunks
 
@@ -139,27 +139,31 @@ To translate captions to English block-by-block while maximizing token efficienc
 node scripts/publisher/translate-helper.js dump <episode>
 ```
 
-Splits the captions into `1_recording/blocks.json` and clean text arrays of 100 blocks each (e.g. `1_recording/chunk-0-99.json`, `chunk-100-199.json`, etc.) without timestamps. This minimizes token consumption during translation.
+Splits the captions into `1_recording/blocks.json` and clean text arrays of 100 blocks each (e.g. `1_recording/chunk-0-99.json`, `chunk-100-199.json`, etc.) without timestamps.
 
-### 2. Translate JSON chunks
+### 2. Review and correct JSON chunks
 
-Translate the JSON text arrays to English using the AI agent, saving each chunk as `2_publisher/trans-X-Y.json` (e.g., `2_publisher/trans-0-99.json`).
+Review the text arrays using the AI agent, fixing grammatical/phonetic errors, people's names, and Angular technical terms while preserving line breaks (`\n`), saving each chunk as `2_publisher/es-chunk-X-Y.json` (e.g., `2_publisher/es-chunk-0-99.json`).
 
-### 3. Compile final English captions
+### 3. Validate alignment
+
+```bash
+node scripts/publisher/translate-helper.js validate [es] <episode>
+```
+
+Displays a diagnostic report of chunk coverage and block counts to guarantee 100% alignment with original timestamps.
+
+### 4. Compile final Spanish captions
 
 ```bash
 node scripts/publisher/translate-helper.js build <episode>
 ```
 
-Stitches the translated English JSON chunks back together using the original timestamps, performing strict block count validation.
+Stitches the corrected Spanish JSON chunks back together with original timestamps and saves to `2_publisher/youtube_captions_es.sbv`.
 
-### 4. Validate alignment (if mismatch occurs)
+### 5. Cleanup temporary chunks
 
-```bash
-node scripts/publisher/translate-helper.js validate <episode>
-```
-
-Displays a side-by-side diagnostic report of Spanish source text and English translations to pinpoint alignment issues.
+Delete temporary chunk files (`blocks.json`, `chunk-*.json`, `es-chunk-*.json`) from the episode directory.
 
 ## YouTube Authentication Setup
 
