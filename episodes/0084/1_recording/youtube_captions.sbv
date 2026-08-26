@@ -1,0 +1,4191 @@
+0:00:06.960,0:00:12.639
+Pues hoy nos acompaña nuevamente desde
+
+0:00:09.400,0:00:14.519
+Lima, Perú, Jaime Burgos Tejada,
+
+0:00:12.639,0:00:16.800
+ingeniero de sistemas con las
+
+0:00:14.519,0:00:19.480
+certificaciones más avanzadas que ofrece
+
+0:00:16.800,0:00:22.680
+AWS, Microsoft y Google en arquitectura
+
+0:00:19.480,0:00:24.080
+de software. Y Jaime, eres uno de los
+
+0:00:22.680,0:00:26.480
+contribuidores más activos de framework
+
+0:00:24.080,0:00:29.439
+de Angular, no solo desde Latinoamérica,
+
+0:00:26.480,0:00:31.840
+sino a nivel mundial. Es un placer
+
+0:00:29.439,0:00:33.680
+grandísimo tenerte de vuelta nuevamente
+
+0:00:31.840,0:00:35.920
+por acá en Angularidades.
+
+0:00:33.680,0:00:37.960
+Un gusto, Alejandro. Este, feliz de
+
+0:00:35.920,0:00:39.640
+compartir otra otra vez acá espacio. Hoy
+
+0:00:37.960,0:00:42.920
+día vamos a hablar este un tema
+
+0:00:39.640,0:00:45.160
+interesante. Ahí puedes compartir qué es
+
+0:00:42.920,0:00:46.719
+lo que vamos a hablar el día de hoy.
+
+0:00:45.160,0:00:48.800
+Sí, participaste anteriormente, por
+
+0:00:46.719,0:00:50.760
+cierto, en el episodio número 76
+
+0:00:48.800,0:00:52.399
+conversando sobre los diagnósticos
+
+0:00:50.760,0:00:53.840
+extendidos del compilador de Angular,
+
+0:00:52.399,0:00:56.000
+que aprendí muchísimo en esa
+
+0:00:53.840,0:00:58.480
+conversación y en este episodio nos
+
+0:00:56.000,0:01:00.840
+vamos a enfocar más bien en lo que es la
+
+0:00:58.480,0:01:03.239
+detección y remediación de
+
+0:01:00.840,0:01:05.040
+vulnerabilidades en el framework. Además
+
+0:01:03.239,0:01:08.159
+de tu experiencia contribuyendo con la
+
+0:01:05.040,0:01:10.759
+solución de box críticos que normalmente
+
+0:01:08.159,0:01:14.040
+tenemos la oportunidad de recibir en
+
+0:01:10.759,0:01:16.720
+Angular y a partir de ahí empezaríamos
+
+0:01:14.040,0:01:18.280
+bueno con una serie de elementos
+
+0:01:16.720,0:01:22.799
+fundamentalmente para sentar las bases.
+
+0:01:18.280,0:01:24.840
+Hablemos de la naturaleza de los box en
+
+0:01:22.799,0:01:28.200
+un framework, considerando casos como
+
+0:01:24.840,0:01:30.479
+los que mencionaba Matthew Triggle del
+
+0:01:28.200,0:01:32.799
+equipo Core del Framework en el video
+
+0:01:30.479,0:01:38.320
+que me compartiste recientemente de la
+
+0:01:32.799,0:01:41.439
+conferencia de NG Poland, donde según su
+
+0:01:38.320,0:01:44.640
+charla solucionar un fallo, puede
+
+0:01:41.439,0:01:46.759
+convertirse en un break porque la
+
+0:01:44.640,0:01:47.680
+comunidad dependía de ese comportamiento
+
+0:01:46.759,0:01:51.520
+roto.
+
+0:01:47.680,0:01:53.600
+caso bastante típico. Y desde tu punto
+
+0:01:51.520,0:01:56.880
+de vista, desde tu experiencia personal,
+
+0:01:53.600,0:01:59.000
+¿cómo es que defines técnicamente un BG
+
+0:01:56.880,0:02:01.799
+a nivel funcional? ¿Y dónde es que
+
+0:01:59.000,0:02:05.119
+trazas esa línea que puede resultar a
+
+0:02:01.799,0:02:08.440
+veces un poco borrosa entre ese tipo de
+
+0:02:05.119,0:02:11.840
+box funcionales y una vulnerabilidad de
+
+0:02:08.440,0:02:14.400
+seguridad? A ver, para mí un back de
+
+0:02:11.840,0:02:16.319
+nivel funcional y un back de seguridad
+
+0:02:14.400,0:02:18.360
+que son muy similares. Ambos son un back
+
+0:02:16.319,0:02:20.599
+al fin y al cabo, ambos pueden producir
+
+0:02:18.360,0:02:22.840
+un breaking change también. Ojo, por
+
+0:02:20.599,0:02:25.440
+ejemplo, yéndonos un poco en el sentido
+
+0:02:22.840,0:02:28.360
+de seguridad, se acordarán de Angular
+
+0:02:25.440,0:02:30.360
+Server Render Common Engine, nuevo motor
+
+0:02:28.360,0:02:32.280
+de Angular, si lo puedes lanzar en
+
+0:02:30.360,0:02:34.560
+cualquier worker que sea compatible con
+
+0:02:32.280,0:02:37.959
+no hasta cierto punto han habido
+
+0:02:34.560,0:02:41.720
+branking chins durante el Angular 20, 21
+
+0:02:37.959,0:02:42.879
+y 22. ¿Qué ha pasado? Han habido varios
+
+0:02:41.720,0:02:44.959
+servicios de seguridad que voy a
+
+0:02:42.879,0:02:48.319
+compartir ahí. Bueno, se ve mi perfil de
+
+0:02:44.959,0:02:51.280
+Geekc. Nos vamos Angular, me interesa
+
+0:02:48.319,0:02:54.440
+irme. Angular, me interesa security and
+
+0:02:51.280,0:02:56.360
+quality. Nos vamos a lo último que ha
+
+0:02:54.440,0:02:57.879
+pasado hace un año. Este es uno de los
+
+0:02:56.360,0:03:00.920
+primeros que se encontraron. Eso lo
+
+0:02:57.879,0:03:03.080
+encontró supuestamente Alan o bueno, no
+
+0:03:00.920,0:03:04.879
+hay ningún este persona que se le haya
+
+0:03:03.080,0:03:06.799
+atribuido Finder. Probablemente sea Alan
+
+0:03:04.879,0:03:08.760
+o sea prácticamente el laboratorio de
+
+0:03:06.799,0:03:10.360
+Google con Dickm para encontrar
+
+0:03:08.760,0:03:12.680
+vulnerabilidades.
+
+0:03:10.360,0:03:14.319
+Además de que tiene programas, etcétera,
+
+0:03:12.680,0:03:15.799
+el cual vamos a profundizar. Lo que
+
+0:03:14.319,0:03:17.480
+pasaba anteriormente es que podíamos
+
+0:03:15.799,0:03:20.120
+nosotros tener un leak entre varias
+
+0:03:17.480,0:03:23.319
+requests en el server side rendering y
+
+0:03:20.120,0:03:25.840
+esto pasaba debido a la naturaleza del
+
+0:03:23.319,0:03:28.200
+dependency injection. Antes lo que
+
+0:03:25.840,0:03:29.560
+teníamos era un Bootstrack, eh lanzabas
+
+0:03:28.200,0:03:30.920
+una función bootstrack application
+
+0:03:29.560,0:03:32.439
+component y config. Ahora tienes que
+
+0:03:30.920,0:03:35.400
+pasarle un context para evitar que esto
+
+0:03:32.439,0:03:37.720
+suceda. Esto salió básicamente para
+
+0:03:35.400,0:03:40.680
+Angular 20 como la última estable y un
+
+0:03:37.720,0:03:42.319
+futuro Angular 21.
+
+0:03:40.680,0:03:44.200
+Entonces hubo básicamente con branking
+
+0:03:42.319,0:03:45.239
+chains le agregaron una propiedad que
+
+0:03:44.200,0:03:46.879
+este no es un branking change ni
+
+0:03:45.239,0:03:48.080
+disruptivo, esto es fácil de arreglar
+
+0:03:46.879,0:03:50.239
+con una esquemática a menos que hagamos
+
+0:03:48.080,0:03:53.079
+cosas demasiado extrañas
+
+0:03:50.239,0:03:54.360
+pero esto era un back y era una
+
+0:03:53.079,0:03:55.959
+vulnerabilidad de seguridad y esto
+
+0:03:54.360,0:03:57.959
+generaba un branking change porque
+
+0:03:55.959,0:03:59.599
+rompía un contrato de un API que tú
+
+0:03:57.959,0:04:01.360
+esperabas que siempre fuera así. Es
+
+0:03:59.599,0:04:03.400
+decir, tú actualizabas tu aplicación sin
+
+0:04:01.360,0:04:06.720
+así, sin ver nada, no iba a funcionar.
+
+0:04:03.400,0:04:08.879
+Así de simple. Ahora existen también los
+
+0:04:06.720,0:04:11.400
+los bats que podemos nosotros llamarle
+
+0:04:08.879,0:04:13.560
+BATs funcionales
+
+0:04:11.400,0:04:15.400
+en el sentido de que por ejemplo ya
+
+0:04:13.560,0:04:18.639
+podemos ver este B que ha habido hace
+
+0:04:15.400,0:04:20.400
+poco componen animation silen stock
+
+0:04:18.639,0:04:22.800
+working in production when the animation
+
+0:04:20.400,0:04:26.479
+rule is inside media que es básicamente
+
+0:04:22.800,0:04:28.600
+lo que pasa acá es que cuando el bandle
+
+0:04:26.479,0:04:30.680
+comprime las animaciones, las reescribe
+
+0:04:28.600,0:04:33.280
+para tener un bndle más pequeño, más
+
+0:04:30.680,0:04:34.759
+eficiente en Angular, lo que nos ha
+
+0:04:33.280,0:04:37.360
+estado pasando
+
+0:04:34.759,0:04:38.840
+es que eliminaba ciertos
+
+0:04:37.360,0:04:40.600
+patrones que debería tener de las
+
+0:04:38.840,0:04:41.800
+animaciones y no funcionaban como se
+
+0:04:40.600,0:04:43.800
+espera, es decir, se rompían las
+
+0:04:41.800,0:04:46.039
+animaciones. Este es un back funcional
+
+0:04:43.800,0:04:49.720
+porque esto por más es molesto
+
+0:04:46.039,0:04:52.520
+efectivamente lo que fuera, no te iba a
+
+0:04:49.720,0:04:54.280
+caer un cross scriting, no ibas a tú, si
+
+0:04:52.520,0:04:55.759
+eres una entidad bancaria o cualquiera,
+
+0:04:54.280,0:04:57.880
+no quieres que la sesión de un usuario
+
+0:04:55.759,0:04:59.400
+caiga en otro usuario, no iba a pasar.
+
+0:04:57.880,0:05:01.160
+Pero este es un back que tampoco trae
+
+0:04:59.400,0:05:03.440
+branking change, esto lo están
+
+0:05:01.160,0:05:05.280
+solventando una persona de la comunidad,
+
+0:05:03.440,0:05:06.520
+ya prácticamente lo han mergeado.
+
+0:05:05.280,0:05:09.199
+Obviamente cuando es un cambio
+
+0:05:06.520,0:05:12.479
+relativamente que puede afectar este un
+
+0:05:09.199,0:05:14.000
+TGP o un Global Presamic, que es
+
+0:05:12.479,0:05:16.280
+básicamente los cambios los intentan
+
+0:05:14.000,0:05:19.520
+introducir o correr junto con la
+
+0:05:16.280,0:05:21.520
+gigantesca T SK de del G3 de Google
+
+0:05:19.520,0:05:23.280
+donde ahí convive Angular y sabrán que
+
+0:05:21.520,0:05:25.560
+Angular es usado en Firebase, varios
+
+0:05:23.280,0:05:26.720
+productos Google Clow y muchísimos
+
+0:05:25.560,0:05:28.759
+productos internos de Google que
+
+0:05:26.720,0:05:31.319
+nosotros no conocemos.
+
+0:05:28.759,0:05:33.840
+Y acá el miembro que corrió esto es
+
+0:05:31.319,0:05:37.680
+Madium. Y si pasa efectivamente se
+
+0:05:33.840,0:05:39.880
+emergea. Ojo que aunque parezca green,
+
+0:05:37.680,0:05:42.520
+esto es curioso. Puede tener errores a
+
+0:05:39.880,0:05:44.360
+los días después. Pueden incluso decir
+
+0:05:42.520,0:05:46.120
+que han tenido fluid test, que son
+
+0:05:44.360,0:05:48.680
+básicamente test inestables, que pueden
+
+0:05:46.120,0:05:50.280
+ser por time outs, etcétera. Pasa y
+
+0:05:48.680,0:05:52.400
+puede que te lo merejen y luego sea
+
+0:05:50.280,0:05:54.319
+revertido. Ha pasado más de una vez. o
+
+0:05:52.400,0:05:55.720
+una regresión que pueda ocasionar que no
+
+0:05:54.319,0:05:58.759
+habían tenido la oportunidad de ver
+
+0:05:55.720,0:06:01.360
+debido a este mismo tipo de fallo o de
+
+0:05:58.759,0:06:03.720
+brecha en los tests.
+
+0:06:01.360,0:06:05.160
+Exactamente. Desde ahí en los fallos que
+
+0:06:03.720,0:06:07.560
+son entre comillas de seguridad podemos
+
+0:06:05.160,0:06:08.800
+clasificarlo en dos tipos. El primero
+
+0:06:07.560,0:06:10.840
+son vulnerabilidades, que son
+
+0:06:08.800,0:06:13.960
+efectivamente vulnerabilidades y merecen
+
+0:06:10.840,0:06:17.039
+un acuisor. Y el segundo tipo son de
+
+0:06:13.960,0:06:20.160
+llamadas endurecimiento o hardening. Acá
+
+0:06:17.039,0:06:23.039
+podemos ver que yo he descubierto el día
+
+0:06:20.160,0:06:26.240
+de hoy 12 vulnerabilidades en Angular.
+
+0:06:23.039,0:06:28.319
+me han acreditado y varios visors, pero
+
+0:06:26.240,0:06:31.120
+entre comillas podríamos decir que han
+
+0:06:28.319,0:06:33.400
+habido más en el sentido que realizado
+
+0:06:31.120,0:06:35.680
+Hardening. Acá podemos ver una respuesta
+
+0:06:33.400,0:06:38.000
+en un pull request del último uno de los
+
+0:06:35.680,0:06:39.960
+últimos visor de Angular, sanitize host
+
+0:06:38.000,0:06:42.240
+binding en host concretos. Quiero decir
+
+0:06:39.960,0:06:43.840
+con esto, la última vulnerabilidad fue
+
+0:06:42.240,0:06:45.520
+básicamente que nosotros podíamos tener
+
+0:06:43.840,0:06:47.880
+host directives. Para quien no conozca
+
+0:06:45.520,0:06:50.160
+nosotros una host directive podemos
+
+0:06:47.880,0:06:52.280
+crear una directiva que no está
+
+0:06:50.160,0:06:53.479
+vinculada a ningún elemento específico y
+
+0:06:52.280,0:06:54.960
+de ahí aplicarla sobre cualquier
+
+0:06:53.479,0:06:57.720
+elemento. Y si tú hacías eso sobre
+
+0:06:54.960,0:07:00.319
+elementos sensitivos como un iframe, eh
+
+0:06:57.720,0:07:03.160
+un o lo que fuera, tú podías bypasear el
+
+0:07:00.319,0:07:05.039
+sanitizer de Angular y tú dirías, eh, de
+
+0:07:03.160,0:07:06.800
+repente eso es bueno, eso quiero hacer.
+
+0:07:05.039,0:07:09.560
+No, porque el modelo de Angular de
+
+0:07:06.800,0:07:12.360
+sanitización es Angular debe sanitizar
+
+0:07:09.560,0:07:14.000
+todo por defecto a menos que tú lo
+
+0:07:12.360,0:07:15.440
+quieras hacer intencionalmente. Si tú lo
+
+0:07:14.000,0:07:17.560
+haces intencionalmente, te atiendes a
+
+0:07:15.440,0:07:19.879
+las consecuencias
+
+0:07:17.560,0:07:22.360
+y ya queda cae en tu responsabilidad si
+
+0:07:19.879,0:07:24.000
+tú vas y paseas el sanitizer de Angular.
+
+0:07:22.360,0:07:25.960
+También no debes escribir tú
+
+0:07:24.000,0:07:27.360
+directamente en el Doom. Eso es otra a
+
+0:07:25.960,0:07:28.879
+menos que tengas tu fusificación. De
+
+0:07:27.360,0:07:30.680
+repente tienes una justificación, no
+
+0:07:28.879,0:07:32.800
+está mal, pero debes tener
+
+0:07:30.680,0:07:34.560
+específicamente cuidado si escribes HTML
+
+0:07:32.800,0:07:36.280
+o cosas inseguras, porque Angular no te
+
+0:07:34.560,0:07:38.639
+protege en ese caso. Y normalmente
+
+0:07:36.280,0:07:41.199
+Angular te dice, "No escribes en el Doom
+
+0:07:38.639,0:07:42.599
+porque no lo recomiendo porque estás
+
+0:07:41.199,0:07:44.080
+yéndote fuera del modelo de tu
+
+0:07:42.599,0:07:45.520
+databinding de Angular, etcétera,
+
+0:07:44.080,0:07:47.400
+etcétera. Puede tener consecuencias que
+
+0:07:45.520,0:07:49.280
+no quieras.
+
+0:07:47.400,0:07:52.039
+¿Ya qué viene todo esto?
+
+0:07:49.280,0:07:56.400
+Acá yo le pregunto a Alan básicamente si
+
+0:07:52.039,0:07:58.280
+este Wizer merece este PR, este fit que
+
+0:07:56.400,0:08:00.319
+ha sido backporteado porque son
+
+0:07:58.280,0:08:04.199
+backporteados. Acá hay backporting para
+
+0:08:00.319,0:08:05.800
+Angular 20 3X 212X
+
+0:08:04.199,0:08:08.159
+y la razón me imagino, es por lo del
+
+0:08:05.800,0:08:09.960
+LTS, el soporte extendido que se le
+
+0:08:08.159,0:08:12.800
+tiene que dar esas visiones que todavía
+
+0:08:09.960,0:08:14.120
+no llegan al final del periodo de tiempo
+
+0:08:12.800,0:08:18.759
+de vida.
+
+0:08:14.120,0:08:21.080
+Claro. Eh, Angular tiene el soporte de
+
+0:08:18.759,0:08:22.560
+LTS de todas las versiones anteriores.
+
+0:08:21.080,0:08:24.960
+Soportan hasta dos versiones anteriores
+
+0:08:22.560,0:08:26.560
+a la última estable durante un periodo
+
+0:08:24.960,0:08:29.400
+de un año, medio año. De ahí vamos a ver
+
+0:08:26.560,0:08:31.440
+un tema interesante de eso después. Y si
+
+0:08:29.400,0:08:34.440
+es porteado normalmente son por dos
+
+0:08:31.440,0:08:36.279
+cosas. puede ser hardening, es decir, no
+
+0:08:34.440,0:08:37.800
+te va a dar un visor, no te va no se va
+
+0:08:36.279,0:08:40.240
+a considerar vulnerabilidad, pero es
+
+0:08:37.800,0:08:42.719
+bueno tenerlo porque endureces y evitas
+
+0:08:40.240,0:08:45.240
+de repente que pasen cosas inesperadas
+
+0:08:42.719,0:08:46.880
+que el desarroll.
+
+0:08:45.240,0:08:48.920
+Y el dos es porque efectivamente son una
+
+0:08:46.880,0:08:50.200
+vulnerabilidad de seguridad. En este
+
+0:08:48.920,0:08:52.160
+caso, esta es una vulnerabilidad de
+
+0:08:50.200,0:08:53.959
+seguridad que ha sido backporteada por
+
+0:08:52.160,0:08:55.519
+esas versiones anteriores de Angular.
+
+0:08:53.959,0:08:57.120
+Esto no genera ningún ranking change
+
+0:08:55.519,0:08:58.800
+porque esto no rompe ninguna
+
+0:08:57.120,0:09:00.079
+compatibilidad porque efectivamente
+
+0:08:58.800,0:09:02.440
+Angula te dice todo debe estar
+
+0:09:00.079,0:09:04.160
+sanitizado. El desarrollador nunca va a
+
+0:09:02.440,0:09:06.399
+esperar o debería esperar que haciendo
+
+0:09:04.160,0:09:08.240
+esto pueda bypasear el sanitizer y si lo
+
+0:09:06.399,0:09:10.480
+hacía, bueno, debería haberlo tal vez
+
+0:09:08.240,0:09:13.920
+reportado o no se dio cuenta, no pasa
+
+0:09:10.480,0:09:15.480
+nada. Por eso es que que la dependemos
+
+0:09:13.920,0:09:16.920
+de la comunidad, hay otros también
+
+0:09:15.480,0:09:17.720
+investigadores de seguridad de la
+
+0:09:16.920,0:09:21.959
+comunidad que han reportado
+
+0:09:17.720,0:09:23.959
+vulnerabilidades. Y acá aprovechando que
+
+0:09:21.959,0:09:26.320
+ha habido un pequeño detalle, eh cuando
+
+0:09:23.959,0:09:27.720
+se generó el visor se olvidó Alan de
+
+0:09:26.320,0:09:32.720
+agregar que ya estaba el parche en la
+
+0:09:27.720,0:09:34.519
+versión 23 28. Hay bastantes parches
+
+0:09:32.720,0:09:35.440
+y le pregunto sobre otros perras que
+
+0:09:34.519,0:09:36.640
+tuve que han sido también
+
+0:09:35.440,0:09:39.399
+backupporteados porque tenía la
+
+0:09:36.640,0:09:41.720
+curiosidad de saber si estos que son
+
+0:09:39.399,0:09:44.480
+relativamente en impacto similar a uno
+
+0:09:41.720,0:09:48.200
+que hubo anteriormente transfert caché
+
+0:09:44.480,0:09:50.399
+que te permitía cachear la cookie y eso
+
+0:09:48.200,0:09:52.600
+podía terminar filtrando datos muy
+
+0:09:50.399,0:09:54.320
+específicos del usuario de sesión o
+
+0:09:52.600,0:09:56.519
+datos que no quieres en un a través de
+
+0:09:54.320,0:09:58.880
+un CDN porque por ejemplo Clowfl te
+
+0:09:56.519,0:10:01.360
+cacha todo. ¿Y por qué diría cachar?
+
+0:09:58.880,0:10:03.480
+Porque el transfer stake HD Angular lo
+
+0:10:01.360,0:10:05.120
+que hace es inyectarte un HTML con la
+
+0:10:03.480,0:10:07.480
+data de la sesión del usuario para ya no
+
+0:10:05.120,0:10:08.640
+repetir la petición en el frontend una
+
+0:10:07.480,0:10:10.079
+vez que ya terminó el servicio y
+
+0:10:08.640,0:10:11.320
+rendering. Es una forma de evitar
+
+0:10:10.079,0:10:13.640
+duplicación,
+
+0:10:11.320,0:10:15.120
+pero esto trae obviamente consecuencias
+
+0:10:13.640,0:10:17.440
+de seguridad que en su momento no se
+
+0:10:15.120,0:10:19.360
+vieron, de repente no fueron detectadas
+
+0:10:17.440,0:10:21.800
+de manera correcta y con el avance de la
+
+0:10:19.360,0:10:25.440
+IA, la IA nos ayuda a ver mejores los
+
+0:10:21.800,0:10:27.560
+patrones. Volviendo, eh Alan acá me da
+
+0:10:25.440,0:10:30.079
+una respuesta
+
+0:10:27.560,0:10:31.920
+sobre uno. Es otro advisor que salió
+
+0:10:30.079,0:10:34.079
+sobre
+
+0:10:31.920,0:10:35.920
+Wick Request make via parent, que es una
+
+0:10:34.079,0:10:38.600
+funcionalidad específica del HTP client
+
+0:10:35.920,0:10:40.480
+para poder proveer otro HTP client
+
+0:10:38.600,0:10:42.760
+dentro de una ruta de manera custom y
+
+0:10:40.480,0:10:44.320
+agregarle unos funcionales más. Esto
+
+0:10:42.760,0:10:46.839
+básicamente
+
+0:10:44.320,0:10:49.720
+permitía también hacer un bypass de de
+
+0:10:46.839,0:10:50.880
+la seguridad del transfer caché. A pesar
+
+0:10:49.720,0:10:53.240
+de que transfer caché ya está
+
+0:10:50.880,0:10:55.760
+endurecido, ya no pasa en ninguno de los
+
+0:10:53.240,0:10:57.440
+casos anteriores, a través de esto, por
+
+0:10:55.760,0:11:00.160
+como funcionaba el sistema inyección de
+
+0:10:57.440,0:11:02.839
+pendencias en Angular, eh tenía ahí un
+
+0:11:00.160,0:11:06.120
+pequeño y los otros dos que yo
+
+0:11:02.839,0:11:08.880
+consideraba que tienen impacto, me dice
+
+0:11:06.120,0:11:10.600
+eh mismo Alan acá es es considerado
+
+0:11:08.880,0:11:13.880
+defens en profundidad, que es decir un
+
+0:11:10.600,0:11:17.000
+endurecimiento y lo y muy similar es
+
+0:11:13.880,0:11:18.480
+para cooki también es un hardening, por
+
+0:11:17.000,0:11:19.839
+más que fueron backporteados, ambos han
+
+0:11:18.480,0:11:21.760
+sido backpteados y aceptados por el
+
+0:11:19.839,0:11:24.519
+equipo, no se consideran vulnerables
+
+0:11:21.760,0:11:26.480
+seguridad porque tienen, digamos, la
+
+0:11:24.519,0:11:29.320
+misma causa raíz y son un caso muchísimo
+
+0:11:26.480,0:11:32.399
+más específico sobre un AC visor que ya
+
+0:11:29.320,0:11:34.880
+fue lanzado anteriormente.
+
+0:11:32.399,0:11:36.680
+Ahora, volviendo a lo que mencionábamos,
+
+0:11:34.880,0:11:38.880
+que también podríamos nosotros tener un
+
+0:11:36.680,0:11:41.600
+breaking change
+
+0:11:38.880,0:11:45.040
+los que hubieron de Scría un tema con
+
+0:11:41.600,0:11:47.639
+URL escenácula, el SCRF,
+
+0:11:45.040,0:11:49.959
+que es básicamente te permitía eh a
+
+0:11:47.639,0:11:51.600
+través de las cabeceras de Angular, de
+
+0:11:49.959,0:11:52.800
+cuando tú mandas una petición a un
+
+0:11:51.600,0:11:54.680
+proyecto de Angular, el service rend
+
+0:11:52.800,0:11:59.160
+Rendery, y tú usas una ruta relativa,
+
+0:11:54.680,0:12:03.000
+digamos API config o API, digamos
+
+0:11:59.160,0:12:05.600
+secrets en el backend y tú confiab
+
+0:12:03.000,0:12:07.040
+con justa razón diciendo, es seguro
+
+0:12:05.600,0:12:08.920
+porque va a pasar en el servidor, va a
+
+0:12:07.040,0:12:10.200
+resolver la ruta relativa del servidor y
+
+0:12:08.920,0:12:12.279
+entonces va a pegarle a mi servicio
+
+0:12:10.200,0:12:14.440
+interno. No voy a ver, no va a haber
+
+0:12:12.279,0:12:15.839
+ningún link de de credenciales porque yo
+
+0:12:14.440,0:12:18.160
+me he asegurado que esto solo se ejecuta
+
+0:12:15.839,0:12:21.480
+en el servidor, en el cliente yo realizo
+
+0:12:18.160,0:12:23.279
+un fall, etcétera, etcétera, etcétera.
+
+0:12:21.480,0:12:25.600
+Sí, esto es para básicamente evitar el
+
+0:12:23.279,0:12:28.959
+ataque típico este de request forgery
+
+0:12:25.600,0:12:32.519
+que ha sido utilizado desde casi que los
+
+0:12:28.959,0:12:34.839
+inicios de la web y yo creo que viene
+
+0:12:32.519,0:12:38.440
+traduciéndose al español como esto el
+
+0:12:34.839,0:12:40.079
+SSRF como falsificación de solicitudes
+
+0:12:38.440,0:12:42.800
+del lado del servidor.
+
+0:12:40.079,0:12:45.079
+Sí, server request foring estaba en el
+
+0:12:42.800,0:12:47.360
+paquete platform server. También hay
+
+0:12:45.079,0:12:48.839
+vulnerabilidades en el Angular Cik. Acá
+
+0:12:47.360,0:12:51.519
+ya vamos a tener una hasta de nivel
+
+0:12:48.839,0:12:53.639
+crítico que fue el heerjection y esto
+
+0:12:51.519,0:12:55.120
+genera un branking change. Esta ha sido
+
+0:12:53.639,0:12:57.880
+la más una de las más grandes que ha
+
+0:12:55.120,0:12:59.959
+tenido Angular en la actualidad. Esta y
+
+0:12:57.880,0:13:02.040
+otra que ha sido para mí incluso más
+
+0:12:59.959,0:13:04.920
+crítica que es de language eh, no de la
+
+0:13:02.040,0:13:06.639
+extensión de VS Code de Angular, que de
+
+0:13:04.920,0:13:08.560
+acá vamos también hablarlo.
+
+0:13:06.639,0:13:10.120
+¿Qué va a langage service? Servicio de
+
+0:13:08.560,0:13:11.920
+lenguaje.
+
+0:13:10.120,0:13:14.360
+No, el servicio de lenguaje parece no es
+
+0:13:11.920,0:13:17.399
+la extensión. El servicio de lenguaje es
+
+0:13:14.360,0:13:19.480
+seguro. Eh, en el monorrepo de Angular
+
+0:13:17.399,0:13:21.440
+hay dos que se puede confundir un poco,
+
+0:13:19.480,0:13:23.519
+que es uno de ese proyecto de language
+
+0:13:21.440,0:13:26.560
+service, que esto es agnóstico, es
+
+0:13:23.519,0:13:28.800
+decir, tú lo podrías usar en, no sé, si
+
+0:13:26.560,0:13:31.519
+tú tienes, si tú quieres lo agarras,
+
+0:13:28.800,0:13:34.920
+haces un fork y lo usas en Neobin, lo
+
+0:13:31.519,0:13:36.800
+usas en bueno, cualquier otro otro
+
+0:13:34.920,0:13:38.320
+editor, ¿no? Basado en BS Code, ¿no? lo
+
+0:13:36.800,0:13:40.480
+que tú quieras puedes hacer.
+
+0:13:38.320,0:13:43.279
+Y lo otro es la extensión como tal para
+
+0:13:40.480,0:13:44.399
+Visual Studio Code de ese de eso en
+
+0:13:43.279,0:13:46.680
+específico.
+
+0:13:44.399,0:13:48.800
+Sí, la extensión en específico es un
+
+0:13:46.680,0:13:50.399
+tema aparte que es también está en el
+
+0:13:48.800,0:13:52.800
+monorrepo de Angular que básicamente es
+
+0:13:50.399,0:13:55.040
+como un puente. Ahí usas el language
+
+0:13:52.800,0:13:57.079
+service y
+
+0:13:55.040,0:13:58.560
+eso lo vamos a ver acá, pero vamos a ver
+
+0:13:57.079,0:14:01.079
+primero esto que nos generó un branking
+
+0:13:58.560,0:14:04.440
+change este de nivel crítico. ¿Qué qué
+
+0:14:01.079,0:14:07.199
+pasaba? que tú podías inyectar el un
+
+0:14:04.440,0:14:09.040
+header arbitrario de un host y mandarle
+
+0:14:07.199,0:14:12.120
+a Angular a que haga una petición a un
+
+0:14:09.040,0:14:14.279
+servidor remoto que no es confiable y
+
+0:14:12.120,0:14:15.839
+podías hacer un leak, un montón de cosas
+
+0:14:14.279,0:14:17.600
+o podías tumbarte incluso el servicio,
+
+0:14:15.839,0:14:21.199
+podías hacer que ese servicio demorara
+
+0:14:17.600,0:14:23.839
+bastante en responder y adiós este tu
+
+0:14:21.199,0:14:25.839
+servidor o que sea un worker.
+
+0:14:23.839,0:14:27.279
+Y entonces hubo un branking change
+
+0:14:25.839,0:14:30.680
+porque tuvieron que agregarle a low
+
+0:14:27.279,0:14:32.920
+coach. con Angular lo que hace es solo
+
+0:14:30.680,0:14:35.399
+confiar en lo que tú le digas, no confía
+
+0:14:32.920,0:14:37.160
+en otro. Si tú le pones un will car, es
+
+0:14:35.399,0:14:38.759
+decir, este, ¿cómo se llama? Un
+
+0:14:37.160,0:14:41.519
+asterisco,
+
+0:14:38.759,0:14:43.680
+bueno, tú te haces responsable y esto se
+
+0:14:41.519,0:14:46.000
+puede mitigar a través de web server,
+
+0:14:43.680,0:14:48.680
+eh, a través de Tonca, lo que tú
+
+0:14:46.000,0:14:51.040
+quieras. Pero si tú exponías tu servidor
+
+0:14:48.680,0:14:52.639
+no o deshabilitabas confiando ciegamente
+
+0:14:51.040,0:14:54.560
+que Angular efectivamente seanizaba
+
+0:14:52.639,0:14:56.920
+esto, ibas a filtrar todos tus
+
+0:14:54.560,0:14:58.959
+credenciales o algo no esperado iba a
+
+0:14:56.920,0:15:01.399
+pasar y esto se esto genera un branking
+
+0:14:58.959,0:15:03.199
+change y cuando son branking chains de
+
+0:15:01.399,0:15:05.160
+seguridad no se espera la ventana de
+
+0:15:03.199,0:15:07.560
+branking chains de Angular. ¿Qué
+
+0:15:05.160,0:15:09.560
+queremos decir esto? Según recuerdo que
+
+0:15:07.560,0:15:11.199
+Madium mencionó que tenemos una ventana
+
+0:15:09.560,0:15:13.279
+de 10 semanas para realizar branking
+
+0:15:11.199,0:15:15.320
+chains en Angular antes de que salga la
+
+0:15:13.279,0:15:17.000
+anterior versión. Eso aplica para
+
+0:15:15.320,0:15:18.360
+cualquier funcionalidad o cosa que el
+
+0:15:17.000,0:15:20.519
+equipo considera suficientemente
+
+0:15:18.360,0:15:23.079
+importante para que salga una ventana de
+
+0:15:20.519,0:15:26.560
+ventana de del release. Ahora, si te
+
+0:15:23.079,0:15:28.759
+sale una vulnerabilidad crítica alta, eh
+
+0:15:26.560,0:15:30.000
+eso no aplica. Angular va a tener que
+
+0:15:28.759,0:15:31.680
+hacer un branking change
+
+0:15:30.000,0:15:34.519
+premediado y de inmediato
+
+0:15:31.680,0:15:37.240
+y de inmediato tiene que salir y lo va
+
+0:15:34.519,0:15:38.800
+portear a las versiones anteriores.
+
+0:15:37.240,0:15:42.079
+Por eso es que nosotros tuvimos la
+
+0:15:38.800,0:15:44.600
+versión de Angular por el cross leak
+
+0:15:42.079,0:15:46.480
+request en la Angular se iba a quedar en
+
+0:15:44.600,0:15:48.240
+20.2
+
+0:15:46.480,0:15:50.160
+punto lo que fuera, pero se subió una
+
+0:15:48.240,0:15:51.279
+minor porque hubo un branking change de
+
+0:15:50.160,0:15:53.680
+inmediato y todas las versiones de
+
+0:15:51.279,0:15:55.720
+Angular mismo pasaron. Lo mismo con
+
+0:15:53.680,0:15:57.160
+esto, hubo un branking change y no
+
+0:15:55.720,0:15:58.519
+teníamos que esperar ninguna ventana de
+
+0:15:57.160,0:16:00.639
+cambio porque esto era una
+
+0:15:58.519,0:16:02.680
+vulnerabilidad crítica.
+
+0:16:00.639,0:16:04.279
+En el caso de la extensión, que también
+
+0:16:02.680,0:16:06.560
+acá está en el repositorio general, esto
+
+0:16:04.279,0:16:08.759
+pasa en Angular Calic, ojo, Angular
+
+0:16:06.560,0:16:10.720
+Calic es donde vive Angular SCR, por si
+
+0:16:08.759,0:16:13.399
+se preguntarán alguien. No sé por qué
+
+0:16:10.720,0:16:14.800
+razón no se encuentre en en el
+
+0:16:13.399,0:16:16.720
+monorrepositorio de Angular, pero
+
+0:16:14.800,0:16:19.279
+Angular tiene dos repositorios, digamos,
+
+0:16:16.720,0:16:23.160
+que son los principales, el Cal y el
+
+0:16:19.279,0:16:24.839
+Angular normal. Entonces, eh acá vamos,
+
+0:16:23.160,0:16:26.680
+hubo otra critical también de Angular,
+
+0:16:24.839,0:16:28.639
+ha tenido dos criticals este año. Esta
+
+0:16:26.680,0:16:30.959
+la encontró lo que yo mencionaba,
+
+0:16:28.639,0:16:33.199
+Cemender, que viene a ser este, digamos,
+
+0:16:30.959,0:16:35.720
+su agente de seguridad de Google a
+
+0:16:33.199,0:16:38.079
+través de su laboratorio de de IA de
+
+0:16:35.720,0:16:39.920
+frontera Google Tick Mind. Acá pueden
+
+0:16:38.079,0:16:41.839
+leer el artículo, pero lo importante es
+
+0:16:39.920,0:16:44.560
+que lo descubrió la IA, lo descubrió un
+
+0:16:41.839,0:16:48.040
+agente de Google de IA, ¿no? Una persona
+
+0:16:44.560,0:16:50.480
+quien lo remendia es Andrew Scop. Y
+
+0:16:48.040,0:16:52.440
+básicamente, ¿qué pasaba? ¿Qué? Tú
+
+0:16:50.480,0:16:54.680
+podías inyectar lo que quisieras, código
+
+0:16:52.440,0:16:56.600
+arbitrario, o sea, podías usar hacer
+
+0:16:54.680,0:16:58.079
+remote o execution en cualquier
+
+0:16:56.600,0:16:59.720
+repositorio de Angular. Imagínate, yo te
+
+0:16:58.079,0:17:02.160
+envío un repositorio de Angular o te
+
+0:16:59.720,0:17:04.199
+digo, "Tú descarga mi repositorio de
+
+0:17:02.160,0:17:06.880
+portafolio, cámbialo y pon tus datos y
+
+0:17:04.199,0:17:10.360
+es una plantilla, ¿no? Y yo te metía un
+
+0:17:06.880,0:17:12.679
+archivito ahí, un JS doc, te ponía en el
+
+0:17:10.360,0:17:14.120
+VS Code una cosita y tú tenías, como
+
+0:17:12.679,0:17:16.679
+eres desarrollador Angular, digamos,
+
+0:17:14.120,0:17:18.679
+como cualquiera, tenías la extensión de
+
+0:17:16.679,0:17:21.480
+Angular Language Service. Ahorita ya no.
+
+0:17:18.679,0:17:23.559
+Esta vulnerabilidad ya felizmente ya si
+
+0:17:21.480,0:17:25.520
+bien existe ya siempre te actualiza BSCO
+
+0:17:23.559,0:17:27.120
+a la última versión. Ya no se pueden
+
+0:17:25.520,0:17:28.720
+aprovechar a menos que tengas la versión
+
+0:17:27.120,0:17:30.240
+antigua si no actualice de manera
+
+0:17:28.720,0:17:32.240
+inmediata.
+
+0:17:30.240,0:17:36.120
+Podían ejecutar lo que quisieran a
+
+0:17:32.240,0:17:39.760
+través de BS Code porque el la extensión
+
+0:17:36.120,0:17:42.480
+de Angular por normativa de BSC existe
+
+0:17:39.760,0:17:44.640
+lo que es Worpace TR. Es decir, si tú le
+
+0:17:42.480,0:17:46.799
+das permisos a un Wordpace, un
+
+0:17:44.640,0:17:48.720
+repositorio, una carpeta para que pueda
+
+0:17:46.799,0:17:51.559
+hacer lo que quiera, entre comillas o
+
+0:17:48.720,0:17:53.600
+decir trabajar normal, la extensión le
+
+0:17:51.559,0:17:55.559
+daba igual, no respetaba si era un
+
+0:17:53.600,0:17:56.760
+trustec o trastec, es decir, ejecutaba
+
+0:17:55.559,0:17:59.520
+lo que quisiera
+
+0:17:56.760,0:18:01.480
+y por esto llegó a ser crítico
+
+0:17:59.520,0:18:02.760
+porque obtuvo el nivel más grado y
+
+0:18:01.480,0:18:05.799
+crítico que viste en Angular, que es un
+
+0:18:02.760,0:18:08.679
+9.3, 3. Felizmente que solo fue en
+
+0:18:05.799,0:18:11.000
+extensión BSC extension y de ahí hubo
+
+0:18:08.679,0:18:13.799
+y quién hace la puntuación de ese tipo
+
+0:18:11.000,0:18:16.960
+de score en base 10.
+
+0:18:13.799,0:18:19.559
+A ver, eh, esto de las puntuaciones,
+
+0:18:16.960,0:18:21.120
+¿no? Los Bueno, el equipo es el que hace
+
+0:18:19.559,0:18:23.320
+el equipo de Angular es quien digamos
+
+0:18:21.120,0:18:25.120
+tasa las vulnerabilidades junto con un,
+
+0:18:23.320,0:18:28.520
+yo entendería un comité o un encargado
+
+0:18:25.120,0:18:30.360
+de seguridad. El encargado de seguridad,
+
+0:18:28.520,0:18:32.799
+hasta donde yo conozco, porque soy parte
+
+0:18:30.360,0:18:34.559
+del equipo de Angular, es Alan, porque
+
+0:18:32.799,0:18:37.200
+Alan es, si se darán cuenta, quien
+
+0:18:34.559,0:18:40.080
+publica los AGBORS en todos, en todos
+
+0:18:37.200,0:18:41.919
+los casos, Alan. Alan forma parte de la
+
+0:18:40.080,0:18:45.280
+de lo que es este seguridad del
+
+0:18:41.919,0:18:46.919
+framework junto con Josh Pierrock, si no
+
+0:18:45.280,0:18:49.159
+estoy mal, espero no estar pronunciando
+
+0:18:46.919,0:18:50.320
+mal su nombre. Es la otra persona, pero
+
+0:18:49.159,0:18:52.440
+Alan es quien yo he visto que ha
+
+0:18:50.320,0:18:53.919
+publicado todos los bicers, también está
+
+0:18:52.440,0:18:57.039
+involucrado en todo lo que respecta a lo
+
+0:18:53.919,0:18:59.640
+que es seguridad. Si ven los PR y todos
+
+0:18:57.039,0:19:03.600
+los visorers siempre salan. Ahora, ¿cómo
+
+0:18:59.640,0:19:07.159
+se tasa del digamos desde un cer hasta
+
+0:19:03.600,0:19:10.520
+un 10? son según las métricas del common
+
+0:19:07.159,0:19:12.440
+vulnerabilities and exposures. Existen
+
+0:19:10.520,0:19:14.440
+versiones, si no estoy mal, ahorita
+
+0:19:12.440,0:19:19.039
+estamos trabajando con las versiones
+
+0:19:14.440,0:19:21.200
+tres y la cuatro, que es según acá los
+
+0:19:19.039,0:19:23.240
+vectores de ataque. Como nosotros
+
+0:19:21.200,0:19:26.039
+estamos en lo que es web, el vector de
+
+0:19:23.240,0:19:27.880
+ataque va a ser siempre network. De ahí
+
+0:19:26.039,0:19:29.720
+se basa en la complejidad, en los
+
+0:19:27.880,0:19:31.919
+requerimientos, en los privilegios que
+
+0:19:29.720,0:19:34.320
+tú necesitas, si necesitas interacción
+
+0:19:31.919,0:19:36.240
+del usuario y las métricas de la del
+
+0:19:34.320,0:19:40.200
+impacto que acá dicen confencialidad,
+
+0:19:36.240,0:19:42.600
+integridad, variabilidad y este impactos
+
+0:19:40.200,0:19:44.440
+subsecuentes.
+
+0:19:42.600,0:19:47.799
+Es decir, mientras más fácil sea
+
+0:19:44.440,0:19:49.240
+realizar un ataque, más va a subir. Y
+
+0:19:47.799,0:19:52.240
+acá prácticamente no necesitamos ningún
+
+0:19:49.240,0:19:55.120
+privilegio, literalmente, porque la
+
+0:19:52.240,0:19:56.760
+extensión no validaba si era truste o
+
+0:19:55.120,0:19:59.120
+contraste. Y acá podemos ver el código
+
+0:19:56.760,0:20:02.039
+que agregó acorde a la a las líneas de
+
+0:19:59.120,0:20:04.600
+de código. Básicamente es pedir
+
+0:20:02.039,0:20:05.600
+confirmamiento y que si no no está de
+
+0:20:04.600,0:20:07.440
+acuerdo el usuario, pues no va a
+
+0:20:05.600,0:20:09.440
+ejecutar nada y por consecuencia no va a
+
+0:20:07.440,0:20:11.880
+pasar nada. Pero eso no se tenía y eso
+
+0:20:09.440,0:20:15.240
+estuvo durante años. Y Jaime, con
+
+0:20:11.880,0:20:17.280
+excepción a esta vulnerabilidad asociada
+
+0:20:15.240,0:20:20.159
+a la extensión de Visual Studio Code,
+
+0:20:17.280,0:20:23.280
+vemos que la mayoría de ellos dependen
+
+0:20:20.159,0:20:25.240
+de la naturaleza SSR, que bueno, con la
+
+0:20:23.280,0:20:28.000
+evolución de ángulas se ha renderizado,
+
+0:20:25.240,0:20:30.799
+híbrido, con hidratación incluida, la
+
+0:20:28.000,0:20:33.960
+superficie de ataque se ha expandido. Y
+
+0:20:30.799,0:20:35.720
+más allá de esos box puntuales que
+
+0:20:33.960,0:20:37.760
+puedan tener el compilador o puedan
+
+0:20:35.720,0:20:39.960
+tener las extensiones, ¿cuáles
+
+0:20:37.760,0:20:42.240
+consideras hoy en día que pueden ser los
+
+0:20:39.960,0:20:45.440
+vectores de riesgo más críticos en
+
+0:20:42.240,0:20:47.400
+aplicaciones de Angular? ¿Y qué
+
+0:20:45.440,0:20:49.360
+directrices clave de las guías oficiales
+
+0:20:47.400,0:20:51.280
+de seguridad? Las que están en el
+
+0:20:49.360,0:20:52.840
+angular.def, Def, best practices,
+
+0:20:51.280,0:20:54.960
+security,
+
+0:20:52.840,0:20:58.360
+todo equipo de desarrollo de software
+
+0:20:54.960,0:21:00.840
+que trabaje con Angular como framework
+
+0:20:58.360,0:21:02.880
+subyacente debería seguir rigurosamente
+
+0:21:00.840,0:21:05.280
+para evitar este tipo de problemas.
+
+0:21:02.880,0:21:07.559
+Lo primero es no confiar nunca en el
+
+0:21:05.280,0:21:11.039
+input del usuario,
+
+0:21:07.559,0:21:13.520
+es decir, vamos a Angular.Dd, D. Vamos a
+
+0:21:11.039,0:21:15.799
+la parte security.
+
+0:21:13.520,0:21:17.240
+Vamos. Acá tenemos seguridad que es
+
+0:21:15.799,0:21:18.880
+básicamente todo de las mejores
+
+0:21:17.240,0:21:21.520
+prácticas.
+
+0:21:18.880,0:21:24.520
+Es decir, aunque tú cumplas la verdad
+
+0:21:21.520,0:21:25.880
+todo esto a raja tabla,
+
+0:21:24.520,0:21:27.720
+el framework también te lo ofrece por
+
+0:21:25.880,0:21:30.039
+defecto la mayor parte de ellos, a no
+
+0:21:27.720,0:21:33.440
+ser de que, como mismo mencionabas
+
+0:21:30.039,0:21:36.200
+antes, explícitamente deshabilite
+
+0:21:33.440,0:21:38.279
+sanitization y una serie de otras
+
+0:21:36.200,0:21:41.679
+protecciones que te ofrece por defecto.
+
+0:21:38.279,0:21:43.080
+Si tú haces bypass te hace responsable,
+
+0:21:41.679,0:21:44.080
+es tu problema. Básicamente es lo que te
+
+0:21:43.080,0:21:46.640
+dice,
+
+0:21:44.080,0:21:48.520
+ya no depende de del framework. Como
+
+0:21:46.640,0:21:49.880
+dato adicional, de repente tú puedes
+
+0:21:48.520,0:21:51.840
+querer hacer bypass, pero poder
+
+0:21:49.880,0:21:55.279
+sanitizarlo. Yo te recomiendo
+
+0:21:51.840,0:21:56.799
+personalmente usar Do este Doom Purify,
+
+0:21:55.279,0:21:59.440
+que es uno de los sanitizadores más
+
+0:21:56.799,0:22:02.880
+grandes y más fiables por si tú
+
+0:21:59.440,0:22:05.360
+necesitas inyectar HTML enriquecido con
+
+0:22:02.880,0:22:06.640
+con clases, estilos, etcétera, etcétera,
+
+0:22:05.360,0:22:07.919
+porque esto no te permite angular. Eso
+
+0:22:06.640,0:22:10.320
+puede ser una razón por la cuales tú
+
+0:22:07.919,0:22:14.360
+quieres hacer un bypass, pero asegúrate
+
+0:22:10.320,0:22:17.799
+de enforzarlo, tener un segundo nivel.
+
+0:22:14.360,0:22:20.919
+Ahora si lo ha si lo haces porque no sé,
+
+0:22:17.799,0:22:23.480
+de repente desconocimiento,
+
+0:22:20.919,0:22:25.799
+recomiendo que preguntes a las Angular
+
+0:22:23.480,0:22:27.320
+Skills, que también Angular se ha
+
+0:22:25.799,0:22:30.480
+mejorado bastante en el tema de la Hay
+
+0:22:27.320,0:22:32.200
+Angular Skills que también puedes tú
+
+0:22:30.480,0:22:35.200
+leerlas, son básicamente un marown, lo
+
+0:22:32.200,0:22:38.200
+instalas con el comando npx skills
+
+0:22:35.200,0:22:38.200
+httpsikhack.com/angular
+
+0:22:38.320,0:22:41.720
+skills y te va a descargar todas las
+
+0:22:40.039,0:22:43.360
+skills. es una buena fuente de
+
+0:22:41.720,0:22:44.360
+documentación resumida y una buena guía
+
+0:22:43.360,0:22:46.200
+para tus
+
+0:22:44.360,0:22:48.000
+total, total. leerla estás alineándote
+
+0:22:46.200,0:22:51.799
+directamente con la información que va
+
+0:22:48.000,0:22:53.840
+recibiendo la gente. Así que la brecha
+
+0:22:51.799,0:22:56.200
+que existiría entre la comprensión que
+
+0:22:53.840,0:22:59.200
+uno tiene de cómo se manejarían cada uno
+
+0:22:56.200,0:23:01.880
+de los elementos que son parte del
+
+0:22:59.200,0:23:04.080
+desglos ese que te hacen los skills, se
+
+0:23:01.880,0:23:06.200
+cerraría básicamente al tener
+
+0:23:04.080,0:23:09.240
+información de primera acerca de cómo es
+
+0:23:06.200,0:23:13.200
+que modelo va a recibir ese tipo de data
+
+0:23:09.240,0:23:16.600
+técnica para que cualquier solicitud que
+
+0:23:13.200,0:23:19.880
+uno le haga modelo sea lo más certera
+
+0:23:16.600,0:23:21.799
+posible con relación a cuáles fueron las
+
+0:23:19.880,0:23:24.200
+prioridades y cuáles fueron los
+
+0:23:21.799,0:23:26.600
+requerimientos de unos el inicio.
+
+0:23:24.200,0:23:28.600
+Exactamente. Y las puedes leer. Este,
+
+0:23:26.600,0:23:32.039
+son completamente seguras. Estas están
+
+0:23:28.600,0:23:33.679
+bajo el brazo del mismo Angular Team,
+
+0:23:32.039,0:23:35.440
+aunque bueno, la comunidad también puede
+
+0:23:33.679,0:23:38.559
+contribuir, no hay ningún problema con
+
+0:23:35.440,0:23:40.760
+eso. Y son básicamente archivos marnow
+
+0:23:38.559,0:23:42.120
+no se asusten. Pues es un buen punto
+
+0:23:40.760,0:23:44.200
+para empezar a contribuir si alguien le
+
+0:23:42.120,0:23:46.480
+interesa o considera que hay algo que
+
+0:23:44.200,0:23:48.200
+está mal escrito, un error de tipo o
+
+0:23:46.480,0:23:49.840
+dicen, "No, esto no, de repente no es la
+
+0:23:48.200,0:23:52.240
+mejor forma, ha habido una alucinación
+
+0:23:49.840,0:23:54.240
+de la IA, etcétera, etcétera, lo podemos
+
+0:23:52.240,0:23:56.760
+arreglar." O sea, no tengan miedo,
+
+0:23:54.240,0:23:58.400
+porque cualquiera se puede equivocar.
+
+0:23:56.760,0:24:00.400
+Eh, nos podemos equivocar, incluso me he
+
+0:23:58.400,0:24:01.640
+equivocado varias veces, me he metido
+
+0:24:00.400,0:24:04.880
+incluso regresiones yo mismo al
+
+0:24:01.640,0:24:06.279
+framework en su momento. Eh, Madi
+
+0:24:04.880,0:24:09.440
+también comenta probablemente en su
+
+0:24:06.279,0:24:13.200
+momento bastante eh no hay problema con
+
+0:24:09.440,0:24:15.440
+equivocarse. Es este es un falo, fallar
+
+0:24:13.200,0:24:17.240
+y fallar lo más rápido posible para que
+
+0:24:15.440,0:24:19.799
+puedas detectar
+
+0:24:17.240,0:24:21.559
+el problema y poder solucionar y
+
+0:24:19.799,0:24:23.679
+aprender a partir de esa práctica.
+
+0:24:21.559,0:24:26.000
+Mientras más rápido falles, mejor. Es
+
+0:24:23.679,0:24:28.120
+básicamente el consejo
+
+0:24:26.000,0:24:30.120
+y denle una oportunidad a las skills,
+
+0:24:28.120,0:24:32.000
+las instalan y las prueban, les va a ir
+
+0:24:30.120,0:24:33.360
+genial. Me ha ayudado a mí bastante. He
+
+0:24:32.000,0:24:35.880
+reducido bastante las solucionaciones de
+
+0:24:33.360,0:24:37.640
+la IA en mi trabajo con esto.
+
+0:24:35.880,0:24:39.720
+Ya escribo menos código, por así
+
+0:24:37.640,0:24:42.279
+decirse, pero superviso más código al
+
+0:24:39.720,0:24:44.039
+día de hoy con esto.
+
+0:24:42.279,0:24:45.960
+Volviendo al tema de seguridad, aunque
+
+0:24:44.039,0:24:48.159
+nosotros cumplamos el rajatabla, esto
+
+0:24:45.960,0:24:50.200
+todos las recomendaciones, las angular
+
+0:24:48.159,0:24:53.279
+skills y tú digas, "Es segura mi
+
+0:24:50.200,0:24:56.159
+aplicación, de repente no lo es.
+
+0:24:53.279,0:24:58.039
+Y esto se debe ya ahorita al auge de la
+
+0:24:56.159,0:24:59.640
+guía que ahora hay más ojos sobre el
+
+0:24:58.039,0:25:03.200
+repositorio. Angular aumenta su
+
+0:24:59.640,0:25:05.039
+popularidad, etcétera y etcétera. Puedes
+
+0:25:03.200,0:25:07.039
+tú también terminar en un cross
+
+0:25:05.039,0:25:09.480
+scriting. Si tú tienes un input del
+
+0:25:07.039,0:25:12.520
+usuario que tú asumes es seguro, tú
+
+0:25:09.480,0:25:14.760
+asumes Angular, lo debes sanitizar y sí
+
+0:25:12.520,0:25:16.559
+debería ser así, pero puede haber
+
+0:25:14.760,0:25:18.120
+algunos fallos en las vulnerables de
+
+0:25:16.559,0:25:20.600
+Angular y se recomienda al día de hoy
+
+0:25:18.120,0:25:22.480
+usar escanar seguridad como Sneak. Eh,
+
+0:25:20.600,0:25:25.440
+Sonar también te provee más o menos algo
+
+0:25:22.480,0:25:27.200
+similar, Yenkins, entiendo que también y
+
+0:25:25.440,0:25:31.720
+otros escánares también de seguridad
+
+0:25:27.200,0:25:34.279
+partes que existen múltiples como este
+
+0:25:31.720,0:25:35.600
+existe de Pendab también de de GeHub, te
+
+0:25:34.279,0:25:37.960
+va avisando cuáles dependencias son
+
+0:25:35.600,0:25:41.520
+vulnerables o tienen CBS
+
+0:25:37.960,0:25:43.480
+y con eso te puedes blindar en parte.
+
+0:25:41.520,0:25:47.080
+Exacto. En parte porque también depende
+
+0:25:43.480,0:25:49.240
+de cuál sea tu ciclo de actualizaciones
+
+0:25:47.080,0:25:53.360
+de los patches que vienen lanzados en el
+
+0:25:49.240,0:25:56.000
+framework, que ya hagan todo el fenómeno
+
+0:25:53.360,0:25:57.720
+este de la corrección y la remediación
+
+0:25:56.000,0:25:59.640
+de la vulnerabilidad.
+
+0:25:57.720,0:26:01.760
+Sí, los ciclos de la remediación de
+
+0:25:59.640,0:26:03.559
+vulnerabilidades de Angular son
+
+0:26:01.760,0:26:05.640
+normalmente semanales, o sea,
+
+0:26:03.559,0:26:06.919
+normalmente cada semana Angular lanza un
+
+0:26:05.640,0:26:09.720
+parche, independiente que haya
+
+0:26:06.919,0:26:12.039
+vulnerabilidades o no, eso le da igual
+
+0:26:09.720,0:26:15.919
+al framework. Todas las semanas Angular
+
+0:26:12.039,0:26:18.080
+hace un release de fits sin importar si
+
+0:26:15.919,0:26:19.880
+son vulnerables o no. Semalmente
+
+0:26:18.080,0:26:21.720
+normalmente lo puedes esperar que sean
+
+0:26:19.880,0:26:26.200
+los miércoles, pero pueden llegar a ser
+
+0:26:21.720,0:26:26.200
+los jueves si es que Geek se cae.
+
+0:26:26.720,0:26:32.480
+Y eh, ¿dónde está? Acá toda la semana
+
+0:26:30.600,0:26:33.880
+salen y pueden haber parches o
+
+0:26:32.480,0:26:37.279
+hardening, así que no se asusten. Por
+
+0:26:33.880,0:26:39.320
+ejemplo, este que salió disallow even
+
+0:26:37.279,0:26:42.320
+attributes in meta, en el servicio de
+
+0:26:39.320,0:26:45.039
+meta era que Angular, yo encontré que
+
+0:26:42.320,0:26:46.720
+Angular te permite meter lo que fuera de
+
+0:26:45.039,0:26:49.000
+manera
+
+0:26:46.720,0:26:52.559
+indiscriminada en un evento on en el
+
+0:26:49.000,0:26:54.200
+meta y entonces podías ejecutar XSS.
+
+0:26:52.559,0:26:55.600
+Entonces, lo que se hizo es básicamente
+
+0:26:54.200,0:26:57.159
+probablemente un harding porque esto no
+
+0:26:55.600,0:27:00.159
+recibido un AC Visor y tampoco creería
+
+0:26:57.159,0:27:02.600
+que va a recibir un AC visor, pero para
+
+0:27:00.159,0:27:03.880
+mí rompía mi el modelo mental de Angular
+
+0:27:02.600,0:27:05.520
+que te dice seguro por defecto. Es
+
+0:27:03.880,0:27:07.399
+decir, tú puedes pasar el meta lo que tú
+
+0:27:05.520,0:27:08.679
+quieras, puedes incluso controlar por el
+
+0:27:07.399,0:27:11.520
+usuario porque
+
+0:27:08.679,0:27:13.919
+tú puedes querer crear este previews de
+
+0:27:11.520,0:27:16.039
+tarjetas, hay un montón de cosas de SEO
+
+0:27:13.919,0:27:17.880
+interesantes que nunca se terminan de de
+
+0:27:16.039,0:27:19.480
+entender. Bien. Entonces tú dices, como
+
+0:27:17.880,0:27:21.200
+el meta me acepta un Jason, yo dejo que
+
+0:27:19.480,0:27:23.039
+el usuario construya su Jason y haga lo
+
+0:27:21.200,0:27:25.880
+que quiera en un este gestor de
+
+0:27:23.039,0:27:28.559
+contenido, en un marketplate si está
+
+0:27:25.880,0:27:31.039
+bien, pero no debería permitirte lanzar
+
+0:27:28.559,0:27:33.240
+eventos y poder romper el modelo de
+
+0:27:31.039,0:27:37.159
+modelo de Angular. Entonces, básicamente
+
+0:27:33.240,0:27:39.000
+la solución es agarra y valida que no
+
+0:27:37.159,0:27:41.919
+tengan nunca eventos on y si tiene un
+
+0:27:39.000,0:27:43.360
+evento on lanza una excepción para que
+
+0:27:41.919,0:27:45.120
+no pueda lograr el atacante y su
+
+0:27:43.360,0:27:46.799
+cometido nunca. Claro. Y esto es un
+
+0:27:45.120,0:27:48.640
+ejemplo perfecto a una de las preguntas
+
+0:27:46.799,0:27:51.640
+que quería hacerte, Jaime, porque
+
+0:27:48.640,0:27:54.720
+teniendo esta trayectoria
+
+0:27:51.640,0:27:56.480
+tan destacada y tanta cantidad de P
+
+0:27:54.720,0:27:58.559
+request aceptados y ya integrados en la
+
+0:27:56.480,0:28:00.600
+rama principal, ¿cuál es el flujo tuyo
+
+0:27:58.559,0:28:02.399
+de trabajo o la metodología que
+
+0:28:00.600,0:28:04.399
+normalmente utilizas si es que tienes
+
+0:28:02.399,0:28:08.760
+alguna estandarizada para poder
+
+0:28:04.399,0:28:11.240
+detectar, reproducir, aislar los box en
+
+0:28:08.760,0:28:13.399
+paquetes como el Angular Compiler o en
+
+0:28:11.240,0:28:14.760
+el core, en el common antes de enviar el
+
+0:28:13.399,0:28:16.360
+pull request?
+
+0:28:14.760,0:28:18.360
+¿Cuál es el proceso?
+
+0:28:16.360,0:28:20.399
+Ah, en general,
+
+0:28:18.360,0:28:22.320
+en general, bueno, para cuando son bats
+
+0:28:20.399,0:28:24.679
+normales, yo intento reproducirlo según
+
+0:28:22.320,0:28:27.200
+lo que nos dan acá la gente o mandarle a
+
+0:28:24.679,0:28:30.159
+una gente de agarra, toma esto,
+
+0:28:27.200,0:28:31.840
+reprodúcemelo. Si es un error común,
+
+0:28:30.159,0:28:34.039
+ya cuando son vulnerables de seguridad,
+
+0:28:31.840,0:28:36.399
+que acá normalmente no están, eh, yo he
+
+0:28:34.039,0:28:38.440
+publicado de repente algunas dirán,
+
+0:28:36.399,0:28:39.679
+"¿Por qué he hecho eso? ¿Por qué lo
+
+0:28:38.440,0:28:43.120
+hago?"
+
+0:28:39.679,0:28:45.120
+eh no pasan, digamos, la barra para que
+
+0:28:43.120,0:28:47.559
+yo los llame unas vulnerables de grado
+
+0:28:45.120,0:28:50.080
+alto o crítico. Si fueran hacer
+
+0:28:47.559,0:28:51.559
+críticas, tendríamos que irnos a través
+
+0:28:50.080,0:28:53.760
+del programa de Back Hunters, que ahí
+
+0:28:51.559,0:28:56.279
+vamos a mencionarlo. Vamos a dar más
+
+0:28:53.760,0:28:58.120
+profundidad. Tengo varias acá. El
+
+0:28:56.279,0:28:59.640
+primero con el que empecé este tema de
+
+0:28:58.120,0:29:01.799
+vulnerabilidades
+
+0:28:59.640,0:29:06.000
+debe estar por acá. Es el primer acuisor
+
+0:29:01.799,0:29:11.000
+que recibía mi nombre. Eh, ya. SBG
+
+0:29:06.000,0:29:12.559
+script y inner HTML content can cube en
+
+0:29:11.000,0:29:14.000
+Angular Template.
+
+0:29:12.559,0:29:16.159
+Eso lo recuerdo cuando lo anunciaste por
+
+0:29:14.000,0:29:19.080
+LinkedIn que normalmente a través de ese
+
+0:29:16.159,0:29:21.039
+canal, esa red social siempre pones en
+
+0:29:19.080,0:29:22.480
+un template que me gusta cantidad la
+
+0:29:21.039,0:29:24.519
+manera en la que los has podido llegar a
+
+0:29:22.480,0:29:25.960
+desarrollar a medida de que vas cerrando
+
+0:29:24.519,0:29:28.159
+los P request.
+
+0:29:25.960,0:29:30.440
+Sí, apenas sale la visor normalmente
+
+0:29:28.159,0:29:33.240
+genera una imagen y un template mínimo
+
+0:29:30.440,0:29:36.120
+con un texto de de lo que indica todo en
+
+0:29:33.240,0:29:37.880
+inglés. Básicamente esto violentaba el
+
+0:29:36.120,0:29:39.679
+el principio de sanitización de Angular.
+
+0:29:37.880,0:29:41.559
+Angular si tú intentas escribir un
+
+0:29:39.679,0:29:43.200
+script, no te va a dejar, o sea, no te
+
+0:29:41.559,0:29:45.440
+va a explotar, no te va a lanzar ningún
+
+0:29:43.200,0:29:47.399
+error, pero cuando tú compiles o
+
+0:29:45.440,0:29:49.679
+levantes tu aplicación en desarrollo,
+
+0:29:47.399,0:29:52.279
+ese script desapareció mágicamente.
+
+0:29:49.679,0:29:55.559
+Entonces eso estaba mal. Yo lo reporté
+
+0:29:52.279,0:29:57.440
+esto a través de Google Back Hunters acá
+
+0:29:55.559,0:29:59.760
+con Telpc, pero me dijeron, "Oye, esto
+
+0:29:57.440,0:30:02.480
+no es suficientemente
+
+0:29:59.760,0:30:04.960
+peligroso, esto puedes tú abrirlo
+
+0:30:02.480,0:30:06.320
+públicamente, así que publícalo.
+
+0:30:04.960,0:30:08.519
+Básicamente, me dijeron, puedes
+
+0:30:06.320,0:30:10.720
+publicarlo, no hay ningún problema."
+
+0:30:08.519,0:30:15.120
+Y como eso me dijeron, agarré y abrí el
+
+0:30:10.720,0:30:18.399
+issue. Y entonces este acá,
+
+0:30:15.120,0:30:22.120
+bueno, acá comentan, acá Madi escribe,
+
+0:30:18.399,0:30:23.679
+esto está es cercano a otro issue que no
+
+0:30:22.120,0:30:26.000
+vamos a verlo esto, pero esto es
+
+0:30:23.679,0:30:27.760
+diferente, ¿ya? Y acá yo básicamente
+
+0:30:26.000,0:30:29.840
+respondo diciendo que en mi opinión
+
+0:30:27.760,0:30:32.640
+acador del modeloción de Angular, esto
+
+0:30:29.840,0:30:34.200
+no debe deberían lanzar una excepción.
+
+0:30:32.640,0:30:36.799
+Aún no me acordaba de la regla que los
+
+0:30:34.200,0:30:39.200
+scripts son eliminados. intenté proponer
+
+0:30:36.799,0:30:42.120
+una solución de que era sanitizar los
+
+0:30:39.200,0:30:44.600
+text bindings porque digamos que el
+
+0:30:42.120,0:30:48.399
+scrck SVG es también un elemento válido
+
+0:30:44.600,0:30:50.799
+del HTML porque el SBG script si nos
+
+0:30:48.399,0:30:53.600
+vamos a MDN lo googleamos es
+
+0:30:50.799,0:30:54.919
+efectivamente un elemento más. Sí, es
+
+0:30:53.600,0:30:56.919
+curioso. El script puede ser más de un
+
+0:30:54.919,0:31:00.799
+elemento porque está dentro de un
+
+0:30:56.919,0:31:03.240
+namins. Puedes tú tener también n space.
+
+0:31:00.799,0:31:04.760
+Y bueno, me cerraron el PR, no hubo
+
+0:31:03.240,0:31:06.320
+ningún problema con eso. Acá lo
+
+0:31:04.760,0:31:08.200
+solucionó Alan. La solución era más
+
+0:31:06.320,0:31:09.720
+simple de lo que se esperaba,
+
+0:31:08.200,0:31:12.399
+pero bueno, depende mucho también de la
+
+0:31:09.720,0:31:14.399
+comunicación con el equipo para tener
+
+0:31:12.399,0:31:17.279
+esa retroalimentación
+
+0:31:14.399,0:31:19.200
+y uno no puede desalientarse en el caso
+
+0:31:17.279,0:31:22.639
+de que uno le cierren un PR. A eso
+
+0:31:19.200,0:31:24.279
+también iba, ¿no? De que es una cuestión
+
+0:31:22.639,0:31:26.559
+de entender cuáles son las prioridades
+
+0:31:24.279,0:31:29.039
+de Framework, también cuáles son las
+
+0:31:26.559,0:31:32.080
+prioridades de las expectativas de los
+
+0:31:29.039,0:31:35.320
+usuarios de Angular a la hora de tener
+
+0:31:32.080,0:31:37.600
+un sistema bastante robusto y lograr esa
+
+0:31:35.320,0:31:40.360
+comunicación de manera efectiva.
+
+0:31:37.600,0:31:42.960
+Claro, eso normalmente de las de cerrar
+
+0:31:40.360,0:31:44.760
+pasa por dos cosas, tres cosas incluso.
+
+0:31:42.960,0:31:47.639
+Vamos con la primera y más común. Por
+
+0:31:44.760,0:31:50.880
+favor, no manden que no no revisen y son
+
+0:31:47.639,0:31:53.120
+alucinaciones de ella. Esa es una. Se
+
+0:31:50.880,0:31:56.000
+han visto bastantes PRs y esta es una
+
+0:31:53.120,0:31:58.200
+queja en general del open source, no es
+
+0:31:56.000,0:32:00.600
+que el Angular Team te tenga en contra
+
+0:31:58.200,0:32:03.000
+algo contra la IA. Yo incluso quien les
+
+0:32:00.600,0:32:05.480
+habla usa la IA para realizar los PRs,
+
+0:32:03.000,0:32:08.320
+investigar, pero no debemos confiar
+
+0:32:05.480,0:32:10.320
+ciegamente en la IA. La IA es una un
+
+0:32:08.320,0:32:13.120
+gran potenciador, una gran herramienta,
+
+0:32:10.320,0:32:14.960
+genial, indudablemente, pero puede
+
+0:32:13.120,0:32:16.559
+cometer errores. Lo que tú tienes que
+
+0:32:14.960,0:32:19.840
+hacer es básicamente quieres mandar un
+
+0:32:16.559,0:32:21.840
+cambio, asegúrate de validarlo, validar
+
+0:32:19.840,0:32:23.480
+que efectivamente no rompan las pruebas,
+
+0:32:21.840,0:32:25.200
+validar que efectivamente sea algo que
+
+0:32:23.480,0:32:27.679
+se necesita,
+
+0:32:25.200,0:32:29.200
+validar que que cumpla el modelo de
+
+0:32:27.679,0:32:31.960
+Angular y también si tú quieres
+
+0:32:29.200,0:32:34.320
+contribuir puedes usar las skills que te
+
+0:32:31.960,0:32:38.639
+dan el mismo Angular. Acá en el punto
+
+0:32:34.320,0:32:41.720
+aen reglas te las para los agentes que
+
+0:32:38.639,0:32:43.679
+te manda acá. Son básicamente las reglas
+
+0:32:41.720,0:32:45.919
+que te obligan a seguir algo que no
+
+0:32:43.679,0:32:49.279
+debes romper. Igual si rompes
+
+0:32:45.919,0:32:51.240
+compatibilidad de repente te lo cierren
+
+0:32:49.279,0:32:52.880
+de repente no si entras en la ventana de
+
+0:32:51.240,0:32:54.880
+cambios, o sea, depende bastante del
+
+0:32:52.880,0:32:57.519
+equipo.
+
+0:32:54.880,0:33:00.519
+Y también este usan acá un skill para
+
+0:32:57.519,0:33:02.320
+revisar el PR. También tú podrías lo que
+
+0:33:00.519,0:33:03.679
+hacer es un look con la con la IA, o
+
+0:33:02.320,0:33:05.639
+sea, tú estar en medio del look de la
+
+0:33:03.679,0:33:07.159
+IA. La IA te genera código, tú le
+
+0:33:05.639,0:33:09.360
+revisas y luego le mandas a la I a
+
+0:33:07.159,0:33:11.760
+volver a revisar, pero de manera crítica
+
+0:33:09.360,0:33:13.320
+y así una y otra vez hasta refinar el
+
+0:33:11.760,0:33:15.760
+código que sea lo suficientemente bueno
+
+0:33:13.320,0:33:18.000
+para pasar los estándares. Lo otro es
+
+0:33:15.760,0:33:19.480
+también cuando ya tienes cierto grado de
+
+0:33:18.000,0:33:22.080
+experiencia con el tiempo contribuyendo
+
+0:33:19.480,0:33:23.760
+al framework, ya te empiezas a dar
+
+0:33:22.080,0:33:26.159
+cuenta que hay ciertos patrones, ciertas
+
+0:33:23.760,0:33:27.200
+cosas que el equipo espera. Ah, lo que
+
+0:33:26.159,0:33:29.000
+siempre tienes que hacer es mandar
+
+0:33:27.200,0:33:30.519
+pruebas. Nunca mandes un PR sin pruebas
+
+0:33:29.000,0:33:32.880
+y ejecuta las pruebas, por favor.
+
+0:33:30.519,0:33:36.120
+Exacto. A no ser de que sea un PR
+
+0:33:32.880,0:33:37.559
+documentación o un PR solucionar algún
+
+0:33:36.120,0:33:39.399
+problema en un skill.
+
+0:33:37.559,0:33:40.880
+Claro, si haces en ese skills, no no hay
+
+0:33:39.399,0:33:43.000
+ninguna prueba. Normalmente yo
+
+0:33:40.880,0:33:44.399
+recomendaría los PRs de documentación si
+
+0:33:43.000,0:33:45.919
+quieres empezar a familiarizarte con el
+
+0:33:44.399,0:33:47.320
+flujo de trabajo y recibir efequipaje
+
+0:33:45.919,0:33:49.240
+del equipo. Hay bastantes cosas que
+
+0:33:47.320,0:33:50.919
+hacer por ahí, documentación, proponer,
+
+0:33:49.240,0:33:54.200
+puedes abrir un issue si no estás seguro
+
+0:33:50.919,0:33:56.399
+si es un problema o no. te responderán
+
+0:33:54.200,0:33:58.760
+todo en inglés, por cierto, porque si no
+
+0:33:56.399,0:34:00.320
+te cierran el issue, solo aceptan el
+
+0:33:58.760,0:34:03.600
+inglés, no aceptan el español al día de
+
+0:34:00.320,0:34:06.120
+hoy, no sabemos en un futuro.
+
+0:34:03.600,0:34:08.359
+Y volviendo al tema de la seguridad, el
+
+0:34:06.120,0:34:10.480
+del SVG fue el primero que empecé. Esto
+
+0:34:08.359,0:34:13.440
+yo lo encontré, la verdad, con ayuda de
+
+0:34:10.480,0:34:15.679
+una agente, mandándole en prueba y error
+
+0:34:13.440,0:34:17.919
+y validándolo, lógicamente manualmente.
+
+0:34:15.679,0:34:19.919
+Nunca debes confiar ciegamente en que la
+
+0:34:17.919,0:34:21.440
+IA dice algo y lo que pasa en la
+
+0:34:19.919,0:34:23.359
+realidad.
+
+0:34:21.440,0:34:25.639
+Entonces, la solución lo hizo ahí Alan,
+
+0:34:23.359,0:34:27.599
+generó de ahí su ACOR y acá también se
+
+0:34:25.639,0:34:29.280
+cometió alguna regresión de seguridad y
+
+0:34:27.599,0:34:31.679
+esto fue el primer ACOR que obtuve. Acá
+
+0:34:29.280,0:34:35.720
+lo podemos ver mi perfil.
+
+0:34:31.679,0:34:37.359
+Vamos para acá. Acá tengo 10 crédito de
+
+0:34:35.720,0:34:39.200
+10 vulnerabilidades. Al día de hoy ya
+
+0:34:37.359,0:34:40.560
+son 12. Dos han salido y aún no han sido
+
+0:34:39.200,0:34:43.079
+aceptadas por GHC, pero ya son
+
+0:34:40.560,0:34:44.879
+vulnerabilidades. Y a la par de esta
+
+0:34:43.079,0:34:47.280
+encontré
+
+0:34:44.879,0:34:50.159
+otra que era del dynamic render
+
+0:34:47.280,0:34:52.040
+component que básicamente permitía crear
+
+0:34:50.159,0:34:54.800
+un script de manera dinámica y según el
+
+0:34:52.040,0:34:56.159
+modelo senitización de Angular tampoco
+
+0:34:54.800,0:34:57.680
+está permitido. No puedes tú crear
+
+0:34:56.159,0:35:00.400
+scripts dentro del modelo sanitización
+
+0:34:57.680,0:35:01.800
+de Angular y vindearle un SRC o algo. Si
+
+0:35:00.400,0:35:03.760
+tú quieres crear un script, inyectarlo
+
+0:35:01.800,0:35:07.000
+en el Doom, tienes que hacerlo fuera del
+
+0:35:03.760,0:35:08.760
+modelo de Angular usando las de un API,
+
+0:35:07.000,0:35:11.000
+pero no pudiste usar create component.
+
+0:35:08.760,0:35:14.000
+Así que esto también lo reporté a la
+
+0:35:11.000,0:35:16.200
+par. Este sí, este sí yo sí lo encontré.
+
+0:35:14.000,0:35:19.480
+Acá no usé porque yo me acordaba que
+
+0:35:16.200,0:35:21.800
+usaba Cigreck a través de las APIs de
+
+0:35:19.480,0:35:24.760
+Angular. Lo he usado realmente largo
+
+0:35:21.800,0:35:27.240
+tiempo, pero recién se me ocurrió que
+
+0:35:24.760,0:35:28.520
+podía ser inseguro porque lanzar sí
+
+0:35:27.240,0:35:31.040
+lanzaba una excepción y yo hacía un
+
+0:35:28.520,0:35:32.760
+bypass porque yo cargaba dinámicamente,
+
+0:35:31.040,0:35:35.440
+digamos, scripts como los pxeles de
+
+0:35:32.760,0:35:37.960
+Facebook, de Google y los renderizaba y
+
+0:35:35.440,0:35:39.960
+los atachaba al Doom. Era básicamente un
+
+0:35:37.960,0:35:43.320
+script carcodeado, ¿no? O sea, no venían
+
+0:35:39.960,0:35:44.480
+de ninguna API, pero para mí esto estaba
+
+0:35:43.320,0:35:46.400
+dentro del modelo de Angular, o sea,
+
+0:35:44.480,0:35:47.880
+Angular me está dejando crear un script,
+
+0:35:46.400,0:35:51.520
+me está lanzando una excepción, si no
+
+0:35:47.880,0:35:54.440
+hago un bypass. Debe ser seguro. No, no,
+
+0:35:51.520,0:35:56.760
+no. Y la sorpresa es, no, no era seguro.
+
+0:35:54.440,0:35:59.880
+Eso estaba seriamente prohibido. Y
+
+0:35:56.760,0:36:04.240
+entonces acá lo que hicieron es generar
+
+0:35:59.880,0:36:06.400
+un fits para esto. Acá está
+
+0:36:04.240,0:36:09.920
+project dinámica. Acá lo acá es lo que
+
+0:36:06.400,0:36:11.560
+hizo Alan es básicamente poner una un
+
+0:36:09.920,0:36:15.160
+seguro que para que no puedas volver a
+
+0:36:11.560,0:36:17.800
+poner nunca más scrip y ya
+
+0:36:15.160,0:36:19.240
+no era muy complicado. Ahí hay incluso
+
+0:36:17.800,0:36:20.599
+problemas de seguridad que si llegas a
+
+0:36:19.240,0:36:23.040
+descubrir y consideras que no son de
+
+0:36:20.599,0:36:24.599
+gravedad crítica, si son críticas por
+
+0:36:23.040,0:36:27.079
+favor repórtalo a través de un canal
+
+0:36:24.599,0:36:29.079
+autorizado. Si no son críticas puedes
+
+0:36:27.079,0:36:31.560
+abrir tu issue. Yo te recomendaría de
+
+0:36:29.079,0:36:34.119
+repente ir por Back Hunters y te pueden
+
+0:36:31.560,0:36:37.720
+dar tus créditos, sea de tú porque lo
+
+0:36:34.119,0:36:39.720
+hallaste o sea porque tú lo remediaste.
+
+0:36:37.720,0:36:41.280
+Es una buena experiencia. Si les
+
+0:36:39.720,0:36:43.319
+interesa pueden meterse un poco más de
+
+0:36:41.280,0:36:46.880
+lleno. La I es buena agente. Puedes
+
+0:36:43.319,0:36:48.640
+incluso Open AI security
+
+0:36:46.880,0:36:50.000
+program
+
+0:36:48.640,0:36:52.319
+puedes tú registrarte en los programas
+
+0:36:50.000,0:36:55.240
+de seguridad, pero creo que necesitaba
+
+0:36:52.319,0:36:56.880
+ser una empresa para Open AI o una
+
+0:36:55.240,0:37:00.200
+persona, creo que también no sé si sigue
+
+0:36:56.880,0:37:02.599
+abierto y el otro es de Antropic
+
+0:37:00.200,0:37:04.520
+Cloud Antropic Security. también te
+
+0:37:02.599,0:37:06.599
+puedes registrar, pero en el caso de
+
+0:37:04.520,0:37:09.000
+Antropic, cuando yo intenté registrarme
+
+0:37:06.599,0:37:10.960
+en su momento, yo encontré una barrera
+
+0:37:09.000,0:37:13.520
+que me pedían básicamente tener trabajo
+
+0:37:10.960,0:37:14.520
+de ciberseguridad. Por naturaleza de mi
+
+0:37:13.520,0:37:16.119
+rol, que es principalmente
+
+0:37:14.520,0:37:18.800
+desarrollador, yo no tenía ninguna
+
+0:37:16.119,0:37:21.160
+investigación de seguridad.
+
+0:37:18.800,0:37:22.480
+Entonces me fui con Open AI y luego ya
+
+0:37:21.160,0:37:25.720
+pude postular Antropic y ya me
+
+0:37:22.480,0:37:28.440
+aceptaron, pero yo personalmente uso más
+
+0:37:25.720,0:37:30.280
+Open AI al día de hoy, me parece más
+
+0:37:28.440,0:37:31.760
+cómodo y eso sería básicamente sobre
+
+0:37:30.280,0:37:34.200
+esto. Y ahora que mencionas estos
+
+0:37:31.760,0:37:37.200
+programas en específico y teniendo en
+
+0:37:34.200,0:37:39.920
+cuenta el historial tuyo acerca de las
+
+0:37:37.200,0:37:43.800
+contribuciones que has hecho a Framework
+
+0:37:39.920,0:37:46.200
+sobre el HTTP Clients, también sobre las
+
+0:37:43.800,0:37:48.880
+imágenes optimizadas, ¿cuál es la
+
+0:37:46.200,0:37:52.040
+motivación principal que te ha hecho
+
+0:37:48.880,0:37:54.800
+enfocarte recientemente en la resolución
+
+0:37:52.040,0:37:56.920
+de Box en el framework? Eh,
+
+0:37:54.800,0:37:59.240
+principalmente esto fue porque yo vi que
+
+0:37:56.920,0:38:01.640
+otras personas estaban mandando PRs
+
+0:37:59.240,0:38:03.760
+hechos con ella de Angular, que uno de
+
+0:38:01.640,0:38:06.720
+los que me recuerda son los del service
+
+0:38:03.760,0:38:09.520
+worker, entre otros, que empezaban a
+
+0:38:06.720,0:38:11.720
+aumentar buscando vulnerabilidades. Y me
+
+0:38:09.520,0:38:14.760
+pregunté a mí mismo, también podría ser
+
+0:38:11.720,0:38:18.400
+lo mismo. Teóricamente conozco un poco
+
+0:38:14.760,0:38:20.599
+más de lo que de una persona conoce de
+
+0:38:18.400,0:38:23.359
+Angular por adentro. No conozco
+
+0:38:20.599,0:38:25.400
+lógicamente a nivel del equipo, pero
+
+0:38:23.359,0:38:28.760
+tengo ya ciertas nociones con el
+
+0:38:25.400,0:38:30.560
+feedback y demás. Y empecé a ya conocía
+
+0:38:28.760,0:38:32.920
+que existía el programa de Google Back
+
+0:38:30.560,0:38:34.760
+Hunters. Son dos tipos de programas. Uno
+
+0:38:32.920,0:38:36.680
+es para encontrar vulnerabilidades. Es
+
+0:38:34.760,0:38:38.400
+decir, tú encuentras vulnerabilidad, la
+
+0:38:36.680,0:38:40.400
+mandas a través de Back Hunters y le
+
+0:38:38.400,0:38:42.319
+dices, "Oye, tienes una vulnerabilidad,
+
+0:38:40.400,0:38:44.119
+arréglo, es tu problema."
+
+0:38:42.319,0:38:45.760
+Y la otra es tú mandas un parche de
+
+0:38:44.119,0:38:47.440
+seguridad acá al framework, el framework
+
+0:38:45.760,0:38:49.240
+evalúa, efectivamente lo evalúa como una
+
+0:38:47.440,0:38:51.720
+vulnerabilidad, te genera los advisor
+
+0:38:49.240,0:38:54.119
+como alguno de estos, que de hecho
+
+0:38:51.720,0:38:55.560
+algunos son bien simples. Curiosamente
+
+0:38:54.119,0:38:57.960
+este es el más fácil de todos que he
+
+0:38:55.560,0:39:00.800
+tenido. El to, este lo encontré también
+
+0:38:57.960,0:39:03.240
+sin to white property binding. Me
+
+0:39:00.800,0:39:05.119
+pregunté por qué por qué no probar
+
+0:39:03.240,0:39:07.560
+intentar hacer un bypass usando tu data
+
+0:39:05.119,0:39:09.720
+binding en Angular y funcionó
+
+0:39:07.560,0:39:11.960
+inesperadamente.
+
+0:39:09.720,0:39:13.880
+Tu data binding era vulnerable.
+
+0:39:11.960,0:39:16.800
+Y la solución
+
+0:39:13.880,0:39:18.400
+es simple, esta línea de código, una
+
+0:39:16.800,0:39:22.079
+línea
+
+0:39:18.400,0:39:24.480
+acá nada más. Y con esto se arregló
+
+0:39:22.079,0:39:26.880
+dentro de Angular para la el arreglo de
+
+0:39:24.480,0:39:28.560
+sanitizer de to data binding era una
+
+0:39:26.880,0:39:30.480
+línea de código dentro de un switch
+
+0:39:28.560,0:39:33.000
+donde resolvía todos los sanitizers
+
+0:39:30.480,0:39:34.720
+resol sanitizer tenía todo los
+
+0:39:33.000,0:39:37.480
+innumerables de las propiedades de opera
+
+0:39:34.720,0:39:40.920
+de operaciones de property pero se
+
+0:39:37.480,0:39:43.920
+habían olvidado agregar tu property y
+
+0:39:40.920,0:39:46.079
+entonces significaba que si tú usabas
+
+0:39:43.920,0:39:47.119
+inner HTML o cualquier atributo sensible
+
+0:39:46.079,0:39:48.800
+dentro del HTML de Angul
+
+0:39:47.119,0:39:50.359
+no lo estaba canalizando por ahí
+
+0:39:48.800,0:39:51.800
+nunca lo iba a canalizar
+
+0:39:50.359,0:39:53.359
+Sí, va a ser un bypass sin que te di
+
+0:39:51.800,0:39:56.280
+cuenta y esto era un defecto en el
+
+0:39:53.359,0:39:59.319
+código. Esto ya lo encontré después ya
+
+0:39:56.280,0:40:02.160
+revisando, pero lo que la idea de la del
+
+0:39:59.319,0:40:04.240
+concepto mínimo lo validé en una angular
+
+0:40:02.160,0:40:06.760
+poniendo literalmente un script,
+
+0:40:04.240,0:40:08.680
+ejecutando un aler y funcionó. Y como
+
+0:40:06.760,0:40:12.240
+funcionó fui al framework y lo lo
+
+0:40:08.680,0:40:13.760
+arreglé. Esto fue más sencillo de todos,
+
+0:40:12.240,0:40:15.480
+pero es básicamente acá era copiar y
+
+0:40:13.760,0:40:17.359
+pegar nada más, no había mucha ciencia.
+
+0:40:15.480,0:40:18.800
+Esto te lo generan las un instructions y
+
+0:40:17.359,0:40:20.079
+demás, el compilador de Angular que
+
+0:40:18.800,0:40:22.280
+podríamos ahí de repente ahondar en
+
+0:40:20.079,0:40:23.920
+algún futuro, pero la línea igual era
+
+0:40:22.280,0:40:25.280
+una igual también podrían ser otros
+
+0:40:23.920,0:40:27.000
+fits, pueden ser prácticamente de una
+
+0:40:25.280,0:40:28.960
+línea de código donde tú simplemente
+
+0:40:27.000,0:40:30.960
+agregas una condición, rechazas y ahí
+
+0:40:28.960,0:40:32.400
+terminó y eso regla una vulnerable de
+
+0:40:30.960,0:40:35.040
+seguridad. no tiene que ser algo
+
+0:40:32.400,0:40:37.400
+demasiado complejo, como también pueden
+
+0:40:35.040,0:40:40.079
+haber casos que son infinitamente más
+
+0:40:37.400,0:40:42.280
+complejos y no tan fáciles de solventar
+
+0:40:40.079,0:40:45.200
+como por ejemplo los del las URLs o
+
+0:40:42.280,0:40:46.599
+serving que a la nada resuelto. Son han
+
+0:40:45.200,0:40:48.839
+sido PRs grandes que han agregado
+
+0:40:46.599,0:40:50.319
+bastante lógica y aún que han agregado
+
+0:40:48.839,0:40:52.240
+han abierto otras brechas que han ido
+
+0:40:50.319,0:40:55.280
+saliendo, pero ya menores, no siendo ya
+
+0:40:52.240,0:40:56.480
+a nivel crítico por suerte.
+
+0:40:55.280,0:40:57.599
+Y esto también puede introducir
+
+0:40:56.480,0:40:59.680
+regresiones en el framework.
+
+0:40:57.599,0:41:01.680
+Curiosamente,
+
+0:40:59.680,0:41:04.800
+¿cómo se siente saber que tus soluciones
+
+0:41:01.680,0:41:07.400
+impactan y protegen a millones de
+
+0:41:04.800,0:41:11.119
+desarrolladores, de proyectos, de
+
+0:41:07.400,0:41:11.119
+usuarios a nivel global?
+
+0:41:12.680,0:41:17.839
+Bueno, ya ya he experimentado parte de
+
+0:41:14.800,0:41:19.800
+esta sensación antes, eh, mandando yo
+
+0:41:17.839,0:41:21.560
+features a Angular, agregando
+
+0:41:19.800,0:41:22.880
+funcionalidades que a mí me han gustado
+
+0:41:21.560,0:41:25.640
+tenerlas y me han ayudado. Por ejemplo,
+
+0:41:22.880,0:41:28.440
+el Kikalay, que lo ya lo mencioné en una
+
+0:41:25.640,0:41:30.079
+anterior charla de angularidades,
+
+0:41:28.440,0:41:32.240
+para ayudarme a mí mismo en el trabajo y
+
+0:41:30.079,0:41:33.920
+ayudar a otros desarrolladores. En este
+
+0:41:32.240,0:41:37.040
+caso se siente más interesante en el
+
+0:41:33.920,0:41:39.160
+sentido que ya no es construir algo, es
+
+0:41:37.040,0:41:41.880
+intentar primero desmantelar el
+
+0:41:39.160,0:41:43.640
+framework, intentar romperlo de maneras
+
+0:41:41.880,0:41:46.720
+que no ni siquiera el ángulo artin han
+
+0:41:43.640,0:41:49.200
+pensado y luego repararlo.
+
+0:41:46.720,0:41:52.520
+Es este es un look interesante porque he
+
+0:41:49.200,0:41:54.280
+usado la a la IA como un ayudante basado
+
+0:41:52.520,0:41:56.560
+en la en algunas teorías y conocimientos
+
+0:41:54.280,0:41:59.079
+que tengo también de ciberseguridad. te
+
+0:41:56.560,0:42:01.760
+pueden tener muy avanzados
+
+0:41:59.079,0:42:03.920
+y le hago iterar sobre un reporte una y
+
+0:42:01.760,0:42:06.240
+otra y otra vez le mando a revisar un
+
+0:42:03.920,0:42:07.599
+paquete o empiezo a buscar los paquetes
+
+0:42:06.240,0:42:09.160
+que han sido más antiguos de Angular,
+
+0:42:07.599,0:42:11.119
+por ejemplo, el Service Worker, donde yo
+
+0:42:09.160,0:42:15.359
+obtuve un ACVOR que fue de grado alto
+
+0:42:11.119,0:42:17.440
+que está por acá. ¿Dónde estás? Acá está
+
+0:42:15.359,0:42:19.960
+sensitive header
+
+0:42:17.440,0:42:22.040
+le on cross origin. Básicamente worker
+
+0:42:19.960,0:42:23.400
+te permitía, o sea, es un proi. Los que
+
+0:42:22.040,0:42:24.960
+hayan usado el service worker saben que
+
+0:42:23.400,0:42:27.200
+funciona un pro hace un replay de las
+
+0:42:24.960,0:42:29.839
+peticiones cuando los cachea y si tú lo
+
+0:42:27.200,0:42:33.000
+tenías un API Group podía mandarte las
+
+0:42:29.839,0:42:34.960
+los headers de autorization,
+
+0:42:33.000,0:42:37.160
+cookies, proy Authorization, entre otros
+
+0:42:34.960,0:42:40.160
+que son muy sensibles y filtrar tus
+
+0:42:37.160,0:42:42.200
+credenciales a una CDN u otro.
+
+0:42:40.160,0:42:43.880
+Eso era porque Worker antiguo y me
+
+0:42:42.200,0:42:46.520
+acordé que Angular Precó porque me
+
+0:42:43.880,0:42:48.079
+cerraron un PR de fature porque ya el
+
+0:42:46.520,0:42:49.760
+paquete pasa mantenimiento, el paquete
+
+0:42:48.079,0:42:52.760
+ya no recibe funcionalidades, pero sí
+
+0:42:49.760,0:42:55.520
+recibe fits de seguridad. Y el otro más
+
+0:42:52.760,0:42:58.359
+interesante ha sido Domino. Domino,
+
+0:42:55.520,0:42:59.800
+quien no conozca, es básicamente en la
+
+0:42:58.359,0:43:01.720
+emulación del Doom que usa Angular para
+
+0:42:59.800,0:43:03.760
+el server se rendering. Cuando usted
+
+0:43:01.720,0:43:06.200
+inyecta document, el da token de
+
+0:43:03.760,0:43:07.800
+Angular, eso viene de domino para que tú
+
+0:43:06.200,0:43:09.400
+puedas mutar el Doom en el server SA
+
+0:43:07.800,0:43:11.640
+rendering sin problemas y sea rápido y
+
+0:43:09.400,0:43:13.760
+fiable. El problema al ser una capa de
+
+0:43:11.640,0:43:16.640
+emulación del Doom y no ser el Doom como
+
+0:43:13.760,0:43:18.359
+tal, esto puede caer en cross scriting.
+
+0:43:16.640,0:43:20.280
+Es decir, tú podías básicamente usar un
+
+0:43:18.359,0:43:22.839
+scrip e inyectar un scrip si hacías una
+
+0:43:20.280,0:43:24.119
+interpolación segura de Angular. Por eso
+
+0:43:22.839,0:43:26.280
+es que yo decía, por más que tu
+
+0:43:24.119,0:43:27.920
+aplicación sea segura de Angular, tú
+
+0:43:26.280,0:43:30.040
+imagínate que tenías un no script
+
+0:43:27.920,0:43:32.160
+dentro, ponías un value interpolado y
+
+0:43:30.040,0:43:34.520
+decías, "Esto debe ser seguro, no estoy
+
+0:43:32.160,0:43:36.880
+va haciendo bypass del sanitizer, puedo
+
+0:43:34.520,0:43:38.280
+dejar que el usuario en el en su CMS
+
+0:43:36.880,0:43:40.319
+pueda hacer lo que quiera y no van
+
+0:43:38.280,0:43:42.079
+aentrar mi seguridad.
+
+0:43:40.319,0:43:43.680
+Es correcto, pero no era correcto del
+
+0:43:42.079,0:43:45.800
+todo. El defecto no venía del
+
+0:43:43.680,0:43:48.480
+desarrollador, venía del framework. Y
+
+0:43:45.800,0:43:51.280
+otros más han habido. Domino ha tenido
+
+0:43:48.480,0:43:54.240
+tres vulnerabilidades de grado alto, de
+
+0:43:51.280,0:43:55.880
+las cuales yo soy el soy quien las he
+
+0:43:54.240,0:43:58.240
+remediado y las he encontrado. Las otras
+
+0:43:55.880,0:43:59.760
+también son con el improperalization de
+
+0:43:58.240,0:44:01.839
+input, que básicamente tú podías poner
+
+0:43:59.760,0:44:04.160
+un emoticon dentro de un texto,
+
+0:44:01.839,0:44:05.559
+desbordabas como un buffer y metías un
+
+0:44:04.160,0:44:08.319
+script.
+
+0:44:05.559,0:44:10.640
+Y el otro era también el missing fall de
+
+0:44:08.319,0:44:12.440
+R Contem, que básicamente era muy
+
+0:44:10.640,0:44:14.520
+similar al no scrck de Angular, pero
+
+0:44:12.440,0:44:16.960
+este era generado por los inline
+
+0:44:14.520,0:44:19.480
+critical CCS, que reparciaba el Doom de
+
+0:44:16.960,0:44:22.079
+una manera que no esperabas. Esto cuando
+
+0:44:19.480,0:44:23.520
+lo encontré eh fue extraño porque lo
+
+0:44:22.079,0:44:25.319
+encontré con ayuda de la IA, pero no
+
+0:44:23.520,0:44:27.359
+funcionaba y luego lo compilé en modo de
+
+0:44:25.319,0:44:29.760
+producción y ahí se activaba el inline
+
+0:44:27.359,0:44:31.079
+critical. Sí, sí es. Al inicio pensé que
+
+0:44:29.760,0:44:33.680
+era una alucinación, pero no era una
+
+0:44:31.079,0:44:36.839
+alucinación. Cuando lo comprobé de
+
+0:44:33.680,0:44:38.760
+manera intua, encontré la causa raíz que
+
+0:44:36.839,0:44:41.559
+era del inline critical CCS que hacía un
+
+0:44:38.760,0:44:43.839
+reparing, o sea, lo menos esperado puede
+
+0:44:41.559,0:44:44.359
+generarte ahí un back como como no
+
+0:44:43.839,0:44:46.359
+tienes idea.
+
+0:44:44.359,0:44:48.960
+Y esa es una de las propiedades en el
+
+0:44:46.359,0:44:52.119
+angular.jonjon que muchos de nosotros
+
+0:44:48.960,0:44:54.520
+hemos utilizado con bastante frecuencia.
+
+0:44:52.119,0:44:57.000
+Sí. Eh, viene por default en true.
+
+0:44:54.520,0:44:59.119
+Básicamente si tú lo mandas a false ya
+
+0:44:57.000,0:45:02.440
+no tienes la vulnerabilidad.
+
+0:44:59.119,0:45:03.559
+Esto quiere decir que si todas las
+
+0:45:02.440,0:45:05.400
+aplicaciones son vulnerables por
+
+0:45:03.559,0:45:06.800
+defecto, tienes que actualizar a la
+
+0:45:05.400,0:45:09.079
+última versión
+
+0:45:06.800,0:45:11.000
+y si no lo usabas, no sé, por alguna
+
+0:45:09.079,0:45:12.880
+razón tú lo tenías en force, bueno, no
+
+0:45:11.000,0:45:15.319
+es vulnerable, pero sin embargo tu
+
+0:45:12.880,0:45:16.559
+escáner de código en mi trabajo igual me
+
+0:45:15.319,0:45:19.119
+iba a marcar que esto es una
+
+0:45:16.559,0:45:20.640
+vulnerabilidad y siempre tener en cuenta
+
+0:45:19.119,0:45:24.079
+que debe estar al día en las versiones
+
+0:45:20.640,0:45:25.559
+LTS de Angular. Si estás debajo,
+
+0:45:24.079,0:45:27.680
+dependiendo del presupuesto de tu
+
+0:45:25.559,0:45:30.359
+trabajo, podrías ir por Giro Deads y
+
+0:45:27.680,0:45:32.599
+pagar una versión de que nunca acaba el
+
+0:45:30.359,0:45:35.640
+soporte, pero desconozco los costos.
+
+0:45:32.599,0:45:38.400
+Lo más fácil posiblemente para muchas de
+
+0:45:35.640,0:45:40.280
+las aplicaciones empresariales que hayan
+
+0:45:38.400,0:45:42.720
+estado lo más cercano posible a la
+
+0:45:40.280,0:45:44.359
+versión más reciente es mantenerse en
+
+0:45:42.720,0:45:46.599
+ese ciclo de actualización. Y por
+
+0:45:44.359,0:45:49.559
+cierto, una pregunta que quería hacerte
+
+0:45:46.599,0:45:52.119
+con la transición de los lanzamientos e
+
+0:45:49.559,0:45:54.400
+angular hacia un ciclo anual, ¿de qué
+
+0:45:52.119,0:45:56.040
+manera crees que este cambio en el ritmo
+
+0:45:54.400,0:45:58.200
+de framework vaya a afectar el
+
+0:45:56.040,0:46:01.160
+backporting de los parches de seguridad
+
+0:45:58.200,0:46:04.240
+y la gestión de versiones basado en lo
+
+0:46:01.160,0:46:07.040
+que ellos estimaron de que pueda tomar
+
+0:46:04.240,0:46:09.040
+el LTS para continuar siendo soportado
+
+0:46:07.040,0:46:10.480
+en el ecosistema?
+
+0:46:09.040,0:46:12.839
+Eh, yo creo que es más bien un cambio
+
+0:46:10.480,0:46:15.800
+positivo porque hay a veces cambios que
+
+0:46:12.839,0:46:17.920
+rompen compatibilidad entre las mayor,
+
+0:46:15.800,0:46:19.680
+¿no? Por ejemplo, el songless por
+
+0:46:17.920,0:46:21.200
+defecto, que han habido varias personas
+
+0:46:19.680,0:46:22.559
+quejándose de que sus aplicaciones,
+
+0:46:21.200,0:46:25.200
+entre comillas, se han roto porque no se
+
+0:46:22.559,0:46:28.960
+habían enterado. El on por defecto en
+
+0:46:25.200,0:46:30.880
+Angular 22, etcétera, etcétera. Eh, si
+
+0:46:28.960,0:46:32.680
+ahora tienes una versión LTS de un año,
+
+0:46:30.880,0:46:34.280
+que es lo que Angular ha cambiado,
+
+0:46:32.680,0:46:35.800
+teóricamente tú vas a recibir igual los
+
+0:46:34.280,0:46:37.720
+backportings, no va a haber ningún
+
+0:46:35.800,0:46:39.480
+problema. Yo creía que es incluso más
+
+0:46:37.720,0:46:41.880
+beneficioso porque yo he tenido en mi
+
+0:46:39.480,0:46:44.520
+trabajo unos fronen antiguos que son una
+
+0:46:41.880,0:46:46.760
+SSPA, no microfronens, que tuvieron
+
+0:46:44.520,0:46:48.359
+vulnerabilidad de seguridad y como yo
+
+0:46:46.760,0:46:50.760
+trabajo en el sector bancario, tienes
+
+0:46:48.359,0:46:52.480
+que pasar por un comité de seguridad, eh
+
+0:46:50.760,0:46:54.880
+hablar básicamente con todos y
+
+0:46:52.480,0:46:57.760
+explicarles, no es vulnerable porque yo
+
+0:46:54.880,0:47:00.119
+no uso unos SUVG y hago unos bindings
+
+0:46:57.760,0:47:02.000
+para generar un cross scriting, ¿no?
+
+0:47:00.119,0:47:04.920
+Esto no pasa a nosotros porque nosotros
+
+0:47:02.000,0:47:08.280
+no tenemos ese caso de uso.
+
+0:47:04.920,0:47:10.760
+Entonces este, si bien es simple decir,
+
+0:47:08.280,0:47:14.119
+no pasa, confíen, tienes tú que
+
+0:47:10.760,0:47:15.680
+demostrarles. Y ahí son, me pasé dos
+
+0:47:14.119,0:47:17.760
+semanas hablando con los equipos de
+
+0:47:15.680,0:47:19.720
+seguridad y demostrándole, no es no es
+
+0:47:17.760,0:47:21.319
+vulnerable, por favor confía en mí,
+
+0:47:19.720,0:47:24.760
+déjame salir a producción que tengo que
+
+0:47:21.319,0:47:26.880
+cumplir tal y tal. Y después de tanto
+
+0:47:24.760,0:47:29.240
+logramos salir, incluso nos cayó un
+
+0:47:26.880,0:47:33.119
+acisor más de seguridad
+
+0:47:29.240,0:47:34.720
+y igual tuvimos que explicar y salimos
+
+0:47:33.119,0:47:35.760
+últimamente por qué aumentaron esa
+
+0:47:34.720,0:47:37.599
+vulnerabilidad de seguridad, que es
+
+0:47:35.760,0:47:40.160
+también porque la IA ha aumentado su
+
+0:47:37.599,0:47:41.880
+auge. Lo otro es también he estado
+
+0:47:40.160,0:47:42.920
+dedicándolo yo personalmente más tiempo.
+
+0:47:41.880,0:47:45.160
+Como yo soy la persona que he
+
+0:47:42.920,0:47:46.800
+descubierto probablemente más de 50% al
+
+0:47:45.160,0:47:49.119
+día de hoy de la vulnerabilidades de
+
+0:47:46.800,0:47:50.200
+Angular de este año, he estado teniendo
+
+0:47:49.119,0:47:52.960
+semanas donde solo me he estado
+
+0:47:50.200,0:47:55.880
+dedicando además de mi trabajo a buscar
+
+0:47:52.960,0:47:58.960
+vulnerabilidades, estar en look con AA y
+
+0:47:55.880,0:48:00.760
+seguir y seguir probando. Ya ha bajado
+
+0:47:58.960,0:48:02.559
+el ritmo porque ya no encuentro tantas
+
+0:48:00.760,0:48:04.040
+vulnerabilidades como antes. Sigo
+
+0:48:02.559,0:48:06.160
+encontrando, pero ya no
+
+0:48:04.040,0:48:08.599
+ya llegaste la todavía del año ya con
+
+0:48:06.160,0:48:09.960
+con relación a la de la que pueden ser
+
+0:48:08.599,0:48:12.640
+repuntadas.
+
+0:48:09.960,0:48:16.040
+Sí, prefiero que encontrarlas yo para
+
+0:48:12.640,0:48:17.440
+solventarlas en mi trabajo y no también
+
+0:48:16.040,0:48:19.000
+esto es bueno en general cualquiera le
+
+0:48:17.440,0:48:20.359
+animo porque es mejor que lo encuentre
+
+0:48:19.000,0:48:22.920
+alguien que lo quiera hacer público a
+
+0:48:20.359,0:48:24.480
+que esto se venda en el mercado negro
+
+0:48:22.920,0:48:26.839
+porque hay definitivamente existe un
+
+0:48:24.480,0:48:29.160
+mercado negro de vulnerabilidades y nos
+
+0:48:26.839,0:48:30.559
+puede afectar a todos. Exacto. Por eso
+
+0:48:29.160,0:48:32.440
+es que también importante utilizar los
+
+0:48:30.559,0:48:34.240
+canales adecuados con estos programas
+
+0:48:32.440,0:48:36.680
+que estabas mencionando y lo de Google
+
+0:48:34.240,0:48:40.559
+Boss Hunter, porque lo contrario, antes
+
+0:48:36.680,0:48:43.559
+de que sea mitigada, si se anuncia puede
+
+0:48:40.559,0:48:46.359
+ser mal utilizada por personas que de
+
+0:48:43.559,0:48:50.720
+pronto utilicen ese periodo de tiempo
+
+0:48:46.359,0:48:54.119
+entre que se reportó y se logra publicar
+
+0:48:50.720,0:48:58.319
+un parche que contenga la solución. Y
+
+0:48:54.119,0:48:59.960
+aime, quería eh tener tu opinión porque
+
+0:48:58.319,0:49:03.720
+en proyectos personales yo suelo
+
+0:48:59.960,0:49:05.920
+configurar PNPN, es decir, PNPM con
+
+0:49:03.720,0:49:08.440
+bloqueo de dependencias transitivas
+
+0:49:05.920,0:49:10.920
+exóticas, es decir, las que provienen de
+
+0:49:08.440,0:49:15.880
+fuentes no confiables, eh, que puede ser
+
+0:49:10.920,0:49:17.839
+un Z o un Tarball o un URL que venga de
+
+0:49:15.880,0:49:22.319
+alguna dirección rara. Y también le
+
+0:49:17.839,0:49:25.359
+pongo para poder darle tiempo a la
+
+0:49:22.319,0:49:27.480
+comunidad de poder solucionar este tipo
+
+0:49:25.359,0:49:29.640
+de vulnerabilidades. Le pongo un time
+
+0:49:27.480,0:49:31.359
+lock de al menos 3 días antes de
+
+0:49:29.640,0:49:33.720
+instalar nuevas versiones para poder
+
+0:49:31.359,0:49:36.359
+mitigar ataques a la cadena de
+
+0:49:33.720,0:49:38.640
+suministro, es decir, los típicos supply
+
+0:49:36.359,0:49:41.480
+chain attacks que han venido siendo
+
+0:49:38.640,0:49:43.559
+trending en los últimos tiempos.
+
+0:49:41.480,0:49:46.480
+Entonces, en el ecosistema
+
+0:49:43.559,0:49:48.799
+moderno de JavaScript, de TyScript,
+
+0:49:46.480,0:49:52.240
+¿cuál es el vector de ataque en supply
+
+0:49:48.799,0:49:55.359
+chain que más te preocupa a ti y qué
+
+0:49:52.240,0:49:58.200
+configuraciones o prácticas recomendaría
+
+0:49:55.359,0:50:01.040
+para quienes desarrollamos en Angular en
+
+0:49:58.200,0:50:02.680
+gestores de paquetes como PNPM para
+
+0:50:01.040,0:50:04.160
+poder blindar un poco más nuestros
+
+0:50:02.680,0:50:07.000
+proyectos?
+
+0:50:04.160,0:50:09.240
+Eh, recomendaría por defecto usar PNPEN.
+
+0:50:07.000,0:50:10.920
+De hecho, Angular se migró PNPEN. Acá
+
+0:50:09.240,0:50:12.640
+están los paquetes que se pueden ser
+
+0:50:10.920,0:50:14.640
+excluidos, los que son propio. Angular
+
+0:50:12.640,0:50:17.079
+confía lógicamente en Angular, pero de
+
+0:50:14.640,0:50:19.760
+ahí el resto no se confía de Das en
+
+0:50:17.079,0:50:21.920
+false, confías en de precake version,
+
+0:50:19.760,0:50:24.280
+solo confías en Angular. La edad mínima
+
+0:50:21.920,0:50:25.200
+de release es creo que de un día que han
+
+0:50:24.280,0:50:26.119
+configurado.
+
+0:50:25.200,0:50:28.319
+Es de un día, sí,
+
+0:50:26.119,0:50:30.200
+de un día. Y básicamente puedes copiar
+
+0:50:28.319,0:50:32.480
+todo esto. Y también lo otro que
+
+0:50:30.200,0:50:34.720
+recomiendo para evitar remote execution
+
+0:50:32.480,0:50:37.079
+es poner este unas banderas de seguridad
+
+0:50:34.720,0:50:39.200
+que no para evitar que puedan acceder al
+
+0:50:37.079,0:50:40.599
+file system entre otros.
+
+0:50:39.200,0:50:42.880
+Si tú no me acuerdo ahorita las
+
+0:50:40.599,0:50:44.559
+banderas, siendo honesto, evitarías que
+
+0:50:42.880,0:50:46.119
+cuando tú ejecutes un scrip o abras un
+
+0:50:44.559,0:50:49.960
+repositorio
+
+0:50:46.119,0:50:52.839
+te ejecuten un script. Lo otro es en BSC
+
+0:50:49.960,0:50:54.559
+también evita el Antrastic porque de
+
+0:50:52.839,0:50:58.880
+repente si tú eres mantenedor de alguna
+
+0:50:54.559,0:51:01.359
+librería famosa o manteniner que no sé
+
+0:50:58.880,0:51:04.000
+pongo de Asios colaborador te pueden
+
+0:51:01.359,0:51:05.640
+robar a ti las credenciales y con eso
+
+0:51:04.000,0:51:07.880
+pueden empezar a hacer un supply ching
+
+0:51:05.640,0:51:09.920
+attack acá no al día de hoy de repente
+
+0:51:07.880,0:51:11.319
+tú ni te das cuenta, a la semana, al
+
+0:51:09.920,0:51:13.359
+mes, a los meses y van haciendo
+
+0:51:11.319,0:51:15.319
+escalonado para tener el mayor impacto
+
+0:51:13.359,0:51:18.680
+posible antes de que tú rotes las las
+
+0:51:15.319,0:51:22.200
+claves. Otro es siempre rota tus claves,
+
+0:51:18.680,0:51:24.839
+usa tu factor sin importar qué y no
+
+0:51:22.200,0:51:26.400
+confíes en repositorios extraños. Es la
+
+0:51:24.839,0:51:29.480
+mayor clave, creo yo.
+
+0:51:26.400,0:51:30.880
+Exacto. Muy buenos consejos esos. Y
+
+0:51:29.480,0:51:32.280
+bueno, antes de concluir la
+
+0:51:30.880,0:51:34.480
+conversación, ¿hay algo más que no hayas
+
+0:51:32.280,0:51:37.040
+mencionado sobre lo que quisieras
+
+0:51:34.480,0:51:38.640
+comentar?
+
+0:51:37.040,0:51:41.079
+Eh,
+
+0:51:38.640,0:51:44.359
+prácticamente nada más. Eh, cualquier
+
+0:51:41.079,0:51:46.119
+anímese a a reportar issues, a colaborar
+
+0:51:44.359,0:51:48.440
+con el equipo de Angular también
+
+0:51:46.119,0:51:50.559
+abiertos. Abran un issue, yo les puedo
+
+0:51:48.440,0:51:53.040
+responder, aunque no pertenezca al
+
+0:51:50.559,0:51:55.319
+equipo. Eh,
+
+0:51:53.040,0:51:57.480
+les puedo instruir. Eh, cualquier
+
+0:51:55.319,0:51:58.839
+pregunta está mi LinkedIn, mi Geekhack,
+
+0:51:57.480,0:52:02.040
+me pueden mandar un correo, lo que
+
+0:51:58.839,0:52:03.200
+quieran y
+
+0:52:02.040,0:52:04.520
+lamento las molestias de las
+
+0:52:03.200,0:52:05.760
+actualizaciones de Angular porque esto
+
+0:52:04.520,0:52:07.839
+me ha estado afectando a mí mismo
+
+0:52:05.760,0:52:09.400
+también. Me he estado pegando un tiro en
+
+0:52:07.839,0:52:10.839
+el pie en el trabajo.
+
+0:52:09.400,0:52:12.880
+Pero la la voz que estás haciendo es
+
+0:52:10.839,0:52:14.559
+fenomenal y Jaime eres una de las
+
+0:52:12.880,0:52:17.559
+personas a las cuales tenemos todos que
+
+0:52:14.559,0:52:22.240
+agradecerle por este tipo de trabajo que
+
+0:52:17.559,0:52:24.920
+hace de una manera desinteresada y que
+
+0:52:22.240,0:52:28.359
+realmente tiene un nivel de impacto
+
+0:52:24.920,0:52:29.760
+supergre en toda la comunidad. Así que
+
+0:52:28.359,0:52:31.240
+en nombre de muchas personas que
+
+0:52:29.760,0:52:35.640
+posiblemente quisieran decirte gracias
+
+0:52:31.240,0:52:37.440
+directamente, te lo digo y invito a
+
+0:52:35.640,0:52:39.359
+todas las personas que quisieran de
+
+0:52:37.440,0:52:41.799
+alguna manera continuar colaborando con
+
+0:52:39.359,0:52:44.200
+este tipo de tareas de mitigación, de
+
+0:52:41.799,0:52:45.440
+vulnerabilidades en el framework. O no
+
+0:52:44.200,0:52:47.640
+solamente tiene que ser en Angulas,
+
+0:52:45.440,0:52:50.520
+también puede ser en otros espacios que
+
+0:52:47.640,0:52:53.280
+le echen un vistazo al trabajo que estás
+
+0:52:50.520,0:52:55.760
+haciendo y cualquier duda, como mismo me
+
+0:52:53.280,0:52:57.760
+invitaste a contactarte directamente
+
+0:52:55.760,0:52:59.760
+para poder continuar la conversación.
+
+0:52:57.760,0:53:02.400
+Muchísimas gracias y nos vemos en el
+
+0:52:59.760,0:53:04.400
+próximo episodio.
+
+0:53:02.400,0:53:08.720
+Nos vemos el próximo episodio. Gracias a
+
+0:53:04.400,0:53:08.720
+todos. Dale. Chao.
+
