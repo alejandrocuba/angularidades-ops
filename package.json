@@ -46,6 +46,8 @@
     "googleapis": "^171.4.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",

@@ -34,20 +34,54 @@ We recommend using the standard package manager defined in the repository.
 
 ## 3. Creating a Branch
 
-Before writing code, create a branch off the `main` branch with a descriptive prefix:
+Before writing code, create a branch off the `main` branch with a descriptive prefix (`<type>/<kebab-case-description>`):
 
 ```bash
 # For a new feature:
-git checkout -b feature/dynamic-header
+git checkout -b feat/dynamic-header
 
 # For a bug fix:
 git checkout -b fix/issue-123-grid-overlap
 
 # For documentation or refactoring:
 git checkout -b chore/clean-unused-imports
+
+# For CI/CD updates:
+git checkout -b ci/automated-releases
 ```
 
-## 4. Coding Standards
+## 4. Commit Message & Release Conventions
+
+This project strictly enforces the [Conventional Commits](https://www.conventionalcommits.org/) specification via commitlint and automated releases using [Release Please](https://github.com/googleapis/release-please).
+
+### Format
+
+```text
+<type>(<optional-scope>): <description in imperative mood, lowercase>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types & SemVer Release Impact
+
+| Type                          | SemVer Impact                  | CHANGELOG Section        | Description                                             |
+| :---------------------------- | :----------------------------- | :----------------------- | :------------------------------------------------------ |
+| `feat:`                       | **MINOR** (`0.1.0` -> `0.2.0`) | Features                 | A new feature                                           |
+| `fix:`                        | **PATCH** (`0.1.0` -> `0.1.1`) | Bug Fixes                | A bug fix                                               |
+| `perf:`                       | **PATCH**                      | Performance Improvements | Performance improvement                                 |
+| `feat!:` / `BREAKING CHANGE:` | **MAJOR** (`1.0.0` -> `2.0.0`) | Breaking Changes         | Breaking API or architectural change                    |
+| `chore:`                      | No bump                        | Excluded                 | Maintenance or tooling changes                          |
+| `ci:`                         | No bump                        | Excluded                 | CI/CD configuration and scripts                         |
+| `docs:`                       | No bump                        | Excluded                 | Documentation updates                                   |
+| `refactor:`                   | No bump                        | Excluded                 | Code change that neither fixes a bug nor adds a feature |
+| `test:`                       | No bump                        | Excluded                 | Adding or correcting tests                              |
+
+> [!IMPORTANT]
+> **Pull Request Titles**: Pull Requests are merged using **Squash & Merge**. The PR title becomes the final commit message on `main`. Your PR title **must** follow the Conventional Commits format (validated in CI by `amannn/action-semantic-pull-request`).
+
+## 5. Coding Standards
 
 - All contributions must follow the protocols in [AGENTS.md](AGENTS.md).
 - Verify UI updates against the visual guidelines in [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md).
@@ -58,7 +92,7 @@ git checkout -b chore/clean-unused-imports
   pnpm run format
   ```
 
-## 5. Submitting a Pull Request (PR)
+## 6. Submitting a Pull Request (PR)
 
 1. Sync your fork with the upstream repository:
    ```bash
@@ -71,7 +105,7 @@ git checkout -b chore/clean-unused-imports
    ```bash
    git push origin your-branch-name
    ```
-3. Open a Pull Request on GitHub.
+3. Open a Pull Request on GitHub with a Conventional Commit title (e.g. `feat: add dynamic user preferences`).
 4. Ensure your PR description clearly states:
    - What changes are introduced.
    - Which issues are resolved (e.g., `Closes #123`).
