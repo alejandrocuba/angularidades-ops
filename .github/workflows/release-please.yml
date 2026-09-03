@@ -1,0 +1,32 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Release & Version Bump
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: node
+
+      - name: Auto-merge Release PR
+        if: ${{ steps.release.outputs.pr }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          PR_NUMBER="${{ fromJson(steps.release.outputs.pr).number }}"
+          echo "Automatically merging Release PR #$PR_NUMBER in $GH_REPO..."
+          gh pr merge "$PR_NUMBER" --repo "$GH_REPO" --squash --admin || \
+          gh pr merge "$PR_NUMBER" --repo "$GH_REPO" --squash || \
+          gh pr merge "$PR_NUMBER" --repo "$GH_REPO" --auto --squash
